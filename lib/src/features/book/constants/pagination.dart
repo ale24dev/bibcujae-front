@@ -1,0 +1,1 @@
+enum PaginationBook { PREVIOUS, NEXT }
