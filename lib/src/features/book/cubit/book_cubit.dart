@@ -15,7 +15,7 @@ class BookCubit extends Cubit<BookState> {
   late int _indexPage;
 
   ///Indice de la paginación actual
-  final int ITEMS_BY_PAGE = 10;
+  final int ITEMS_BY_PAGE = 20;
 
   int get indexPage => _indexPage;
 

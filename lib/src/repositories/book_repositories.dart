@@ -16,7 +16,7 @@ import '../shared/utils.dart';
 
 class BookRepository {
   Future<ApiResult<BookPageEntity>> getAllBooks(
-      {int? page, int? items, String? url}) async {
+      {int? page, required int items, String? url}) async {
     ApiResult<BookPageEntity> result = ApiResult();
     try {
       Map<String, String> headers = {
@@ -26,7 +26,7 @@ class BookRepository {
 
       Map<String, dynamic> params = {
         "page": page ?? 1,
-        "items": items ?? 10,
+        "items": items,
       };
 
       Uri targetUrl = Uri.parse(
@@ -74,35 +74,18 @@ class BookRepository {
       };
       listMaps.add(map);
     }
-    print(listMaps.length);
     Uri targetUrl = Uri.parse(Urls.donwloadBookReport);
     var response = await http.post(targetUrl,
         headers: headers, body: jsonEncode(listMaps));
-    print(response.statusCode);
 
     // Descargar el archivo Excel en el navegador
     var blob = html.Blob([response.bodyBytes],
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     var url = html.Url.createObjectUrlFromBlob(blob);
-    var link = html.document.createElement('a') as html.AnchorElement
+    html.document.createElement('a') as html.AnchorElement
       ..href = url
       ..download = 'books.xlsx'
       ..click();
     html.Url.revokeObjectUrl(url);
-    // final bytes = response.bodyBytes;
-    // const fileName = 'data.xlsx';
-
-    // final directory =
-    //     await html.window.requestFileSystem(20 * 1024 * 1024).then((fs) => fs.root);
-    // final file = await directory?.createFile(fileName);
-    // final blob = html.Blob([bytes]);
-    // final blobUrl = html.Url.createObjectUrlFromBlob(blob);
-    // final anchor = html.document.createElement('a') as html.AnchorElement
-    //   ..href = blobUrl
-    //   ..download = fileName;
-    // html.document.body?.children.add(anchor);
-    // anchor.click();
-    // html.document.body?.children.remove(anchor);
-    // html.Url.revokeObjectUrl(blobUrl);
   }
 }
