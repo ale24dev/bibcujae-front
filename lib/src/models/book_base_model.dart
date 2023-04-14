@@ -6,7 +6,7 @@ part 'book_base_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class BookBaseModel {
   @JsonKey(name: "libro_id")
-  final int bookId;
+  final int? bookId;
 
   @JsonKey(name: "titulo")
   final String? title;

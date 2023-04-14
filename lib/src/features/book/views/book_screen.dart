@@ -44,7 +44,18 @@ class _BookScreenState extends State<BookScreen> {
             switch (state.runtimeType) {
               case BookLoading:
                 return const Center(child: CircularProgressIndicator());
-
+              case BookCreated:
+                context.read<BookCubit>().loadBooks();
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: GStyles.colorPrimary,
+                      content: const Text('Libro creado correctamente'),
+                    ),
+                  );
+                  Navigator.pop(context);
+                });
+                return const Center(child: CircularProgressIndicator());
               case BookLoaded:
                 return Column(
                   children: [
@@ -119,7 +130,7 @@ class _BookScreenState extends State<BookScreen> {
                             ),
                           ),
                           Text(
-                            "Página ${cubit.indexPage} de ${bookPageEntity.count / cubit.ITEMS_BY_PAGE}",
+                            "Página ${bookPageEntity.currentPage} de ${bookPageEntity.numPages}",
                             style: context.textTheme.bodyText1
                                 ?.copyWith(color: Colors.black),
                           ),

@@ -44,6 +44,8 @@ class BookRepository {
             count: jsonDecode(response.body)["count"],
             next: jsonDecode(response.body)["next"],
             previous: jsonDecode(response.body)["previous"],
+            currentPage: jsonDecode(response.body)["current_page"],
+            numPages: jsonDecode(response.body)["num_pages"],
             results: bookList);
 
         result.responseObject = bookPageEntity;
@@ -87,5 +89,25 @@ class BookRepository {
       ..download = 'books.xlsx'
       ..click();
     html.Url.revokeObjectUrl(url);
+  }
+
+  Future<ApiResult<BookPageEntity>> createBook(
+      BookBaseModel bookBaseModel) async {
+    ApiResult<BookPageEntity> result = ApiResult();
+    try {
+      Map<String, String> headers = {
+        'Authorization':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNTY2MjE1LCJpYXQiOjE2ODA1NjU5MTUsImp0aSI6ImQ1Y2VkM2I3ODg4YjRiMWY4YjQ4NWI4MmFhNzc2M2ExIiwidXNlcl9pZCI6Mn0.5t1YtQgoSW4TTmttqhHtiYRJ_4W916CF1q76ZpRFjsU',
+      };
+
+      Uri targetUrl = Uri.parse(Urls.createBook);
+      var response = await http.post(targetUrl,
+          headers: headers, body: json.encode(bookBaseModel.toJson()));
+      result.statusCode = response.statusCode;
+    } catch (e) {
+      print("EROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR 1" + e.toString());
+      result.serverError = e.toString();
+    }
+    return result;
   }
 }

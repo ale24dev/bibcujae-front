@@ -1,19 +1,64 @@
+import 'package:bibcujae/src/models/book_base_model.dart';
 import 'package:bibcujae/src/shared/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../resources/general_styles.dart';
 import '../../../entities/book_page_entity.dart';
 import '../../../repositories/book_repositories.dart';
 import '../../../shared/constants/constants.dart';
+import '../cubit/book_cubit.dart';
 
-class HeaderBookScreen extends StatelessWidget {
+class HeaderBookScreen extends StatefulWidget {
   const HeaderBookScreen({
     super.key,
     required this.bookPageEntity,
   });
 
   final BookPageEntity bookPageEntity;
+
+  @override
+  State<HeaderBookScreen> createState() => _HeaderBookScreenState();
+}
+
+class _HeaderBookScreenState extends State<HeaderBookScreen> {
+  late TextEditingController titleController;
+  late TextEditingController authorController;
+  late TextEditingController domCodeController;
+  late TextEditingController isbnController;
+  late TextEditingController deweyController;
+  late TextEditingController publicationController;
+  late TextEditingController colationController;
+  late TextEditingController referenceController;
+
+  bool emptyRequiredFields = false;
+
+  @override
+  void initState() {
+    titleController = TextEditingController();
+    authorController = TextEditingController();
+    domCodeController = TextEditingController();
+    isbnController = TextEditingController();
+    deweyController = TextEditingController();
+    publicationController = TextEditingController();
+    colationController = TextEditingController();
+    referenceController = TextEditingController();
+    super.initState();
+  }
+
+  // @override
+  // void dispose() {
+  //   titleController.dispose();
+  //   authorController.dispose();
+  //   domCodeController.dispose();
+  //   isbnController.dispose();
+  //   deweyController.dispose();
+  //   publicationController.dispose();
+  //   colationController.dispose();
+  //   referenceController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +79,7 @@ class HeaderBookScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8.sp)),
                 child: Padding(
                   padding: EdgeInsets.all(6.sp),
-                  child: Text(bookPageEntity.count.toString(),
+                  child: Text(widget.bookPageEntity.count.toString(),
                       style: context.textTheme.bodyText1
                           ?.copyWith(color: Colors.white, fontSize: 11.sp)),
                 ))
@@ -45,7 +90,8 @@ class HeaderBookScreen extends StatelessWidget {
             InkWell(
               onTap: () {
                 BookRepository bookRepository = BookRepository();
-                bookRepository.downloadBooksReport(bookPageEntity.results);
+                bookRepository
+                    .downloadBooksReport(widget.bookPageEntity.results);
               },
               child: Container(
                   decoration: BoxDecoration(
@@ -104,6 +150,7 @@ class HeaderBookScreen extends StatelessWidget {
   }
 
   Widget addBookDialog(BuildContext context) {
+    print(emptyRequiredFields);
     return SimpleDialog(
       contentPadding:
           EdgeInsets.symmetric(horizontal: Constants.MARGIN, vertical: 2.h),
@@ -112,14 +159,33 @@ class HeaderBookScreen extends StatelessWidget {
               style: context.textTheme.bodyText1
                   ?.copyWith(fontWeight: FontWeight.bold, fontSize: 14.sp))),
       children: [
-        addbookSection(context: context, title: "Título", isRequired: true),
-        addbookSection(context: context, title: "Autor"),
-        addbookSection(context: context, title: "Cod. Domicilio"),
-        addbookSection(context: context, title: "ISBN"),
-        addbookSection(context: context, title: "Dewey"),
-        addbookSection(context: context, title: "Publicación"),
-        addbookSection(context: context, title: "Colación"),
-        addbookSection(context: context, title: "Referencia"),
+        addbookSection(
+            context: context,
+            title: "Título",
+            isRequired: true,
+            controller: titleController),
+        addbookSection(
+            context: context, title: "Autor", controller: authorController),
+        addbookSection(
+            context: context,
+            title: "Cod. Domicilio",
+            controller: domCodeController),
+        addbookSection(
+            context: context, title: "ISBN", controller: isbnController),
+        addbookSection(
+            context: context, title: "Dewey", controller: deweyController),
+        addbookSection(
+            context: context,
+            title: "Publicación",
+            controller: publicationController),
+        addbookSection(
+            context: context,
+            title: "Colación",
+            controller: colationController),
+        addbookSection(
+            context: context,
+            title: "Referencia",
+            controller: referenceController),
         Container(
           margin: EdgeInsets.only(top: 2.h),
           child: Row(
@@ -135,7 +201,43 @@ class HeaderBookScreen extends StatelessWidget {
               ),
               SizedBox(width: 5.w),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (titleController.text.isEmpty) {
+                      setState(() {
+                        emptyRequiredFields = true;
+                      });
+                    } else {
+                      BookBaseModel book = BookBaseModel(
+                          bookId: null,
+                          title: titleController.text,
+                          entry: null,
+                          authorType: null,
+                          author: authorController.text,
+                          otherAuthors: null,
+                          edition: null,
+                          series: null,
+                          notes: null,
+                          publicationYear: null,
+                          responsibilityMention: null,
+                          addressCode: null,
+                          isbn: isbnController.text,
+                          dewey: deweyController.text,
+                          event: null,
+                          otherEvents: null,
+                          publication: publicationController.text,
+                          collation: colationController.text,
+                          otherTitles: null,
+                          pamphlet: null,
+                          reference: referenceController.text,
+                          entryLetters: null,
+                          titleLetters: null,
+                          classification: null,
+                          language: null,
+                          country: null);
+
+                      context.read<BookCubit>().createBook(bookBaseModel: book);
+                    }
+                  },
                   child: Text("Crear",
                       style: context.textTheme.bodyText1
                           ?.copyWith(color: Colors.white))),
@@ -149,7 +251,8 @@ class HeaderBookScreen extends StatelessWidget {
   Widget addbookSection(
       {required BuildContext context,
       required String title,
-      bool? isRequired}) {
+      bool? isRequired,
+      required TextEditingController controller}) {
     return Row(
       children: [
         Container(
@@ -172,6 +275,7 @@ class HeaderBookScreen extends StatelessWidget {
         Expanded(
             child: TextField(
           style: context.textTheme.bodyText1,
+          controller: controller,
         ))
       ],
     );

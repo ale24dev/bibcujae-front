@@ -24,6 +24,7 @@ class Urls {
   static String document = "$hostApi/document";
   ///Books services
   static String get getAllBooks => '$document/book/all';
+  static String get createBook => '$document/book/create';
   static String get donwloadBookReport => '$document/book/writeInExcel/';
   
   
