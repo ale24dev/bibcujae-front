@@ -12,7 +12,7 @@ class BookDataSource extends DataGridSource {
               DataGridCell<String>(columnName: 'Título', value: e.title),
               DataGridCell<String>(columnName: 'Autor', value: e.author),
               DataGridCell<String>(
-                  columnName: 'Cod de Domicilio', value: e.addressCode),
+                  columnName: 'Cod de Domicilio', value: e.domCode),
               DataGridCell<String>(columnName: 'ISBN', value: e.isbn),
               DataGridCell<String>(columnName: 'Dewey', value: e.dewey),
               DataGridCell<String>(

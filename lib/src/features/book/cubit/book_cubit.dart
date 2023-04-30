@@ -15,7 +15,10 @@ class BookCubit extends Cubit<BookState> {
   ///Total de items por pagina
   final int ITEMS_BY_PAGE = 20;
 
+  List<BookBaseModel>? listBooks;
+
   void loadBooks({String? url, PaginationBook? paginationBook}) async {
+    listBooks = [];
     emit(BookLoading());
 
     final ApiResult apiResult = await serviceLocator<BookRepository>()
@@ -23,6 +26,7 @@ class BookCubit extends Cubit<BookState> {
 
     switch (apiResult.statusCode) {
       case 200:
+        listBooks!.addAll(apiResult.responseObject.results);
         emit(BookLoaded(apiResult: apiResult));
         break;
 
@@ -37,7 +41,6 @@ class BookCubit extends Cubit<BookState> {
     final ApiResult apiResult =
         await serviceLocator<BookRepository>().createBook(bookBaseModel);
 
-    print(apiResult.statusCode);
     switch (apiResult.statusCode) {
       case 200:
         emit(BookCreated());

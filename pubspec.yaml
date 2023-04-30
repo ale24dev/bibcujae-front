@@ -42,6 +42,7 @@ dependencies:
 
   #Navigator
   go_router: ^6.5.3
+  beamer: ^1.5.3
 
   #Responsive design
   responsive_sizer: ^3.0.8
@@ -68,6 +69,7 @@ dependencies:
   #A Flutter plugin for finding commonly used locations on the filesystem.
   path_provider: ^2.0.14
 
+  flutter_svg: ^2.0.5
 
 dev_dependencies:
   flutter_test:
@@ -94,8 +96,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../shared/constants/constants.dart';
 import '../../book/views/book_screen.dart';
 import '../../splash/splash_controller.dart';
 import '../constants/drawer_items.dart';
@@ -23,36 +24,33 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider(
-        create: (context) => DrawerCubit(),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              const DrawerSection(),
-              Expanded(
-                child: BlocBuilder<DrawerCubit, DrawerState>(
-                  builder: (context, state) {
-                    switch (state.drawerItem) {
-                      case DrawerItem.BOOKS:
-                        return const BookScreen();
-                      default:
-                        Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5.0)),
-                        );
-                    }
-                    return Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(5.0)),
-                    );
-                  },
-                ),
-              )
-            ],
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            const DrawerSection(),
+            Expanded(
+              child: BlocBuilder<DrawerCubit, DrawerState>(
+                builder: (context, state) {
+                  switch (state.drawerItem) {
+                    case DrawerItem.BOOKS:
+                      return const BookScreen();
+                    default:
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(Constants.RADIO_BUTTONS)),
+                      );
+                  }
+                  return Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(Constants.RADIO_BUTTONS)),
+                  );
+                },
+              ),
+            )
+          ],
         ),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:bibcujae/src/shared/constants/constants.dart';
 import 'package:bibcujae/src/shared/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -12,6 +13,7 @@ import '../../../repositories/book_repositories.dart';
 import '../constants/pagination.dart';
 import '../widgets/book_table_data_source.dart';
 import '../widgets/header_book_screen.dart';
+import 'book_details_screen.dart';
 
 class BookScreen extends StatefulWidget {
   const BookScreen({super.key});
@@ -27,10 +29,9 @@ class _BookScreenState extends State<BookScreen> {
   int rowsSelected = 0;
   @override
   Widget build(BuildContext context) {
-    print(rowsSelected);
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(5.0)),
+          color: Colors.white, borderRadius: BorderRadius.circular(Constants.RADIO_BUTTONS)),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: BlocBuilder<BookCubit, BookState>(
@@ -80,6 +81,14 @@ class _BookScreenState extends State<BookScreen> {
                         source: bookDataSource,
                         columnWidthMode: ColumnWidthMode.fill,
                         allowSorting: true,
+                        onCellTap: (details) {
+                          context.go(Uri(path: '/book', queryParameters: {
+                            'idBook': bookPageEntity
+                                .results[details.rowColumnIndex.rowIndex - 1]
+                                .bookId
+                                .toString()
+                          }).toString());
+                        },
                         columns: <GridColumn>[
                           gridColumn(name: 'Título'),
                           gridColumn(name: 'Autor'),
@@ -115,17 +124,12 @@ class _BookScreenState extends State<BookScreen> {
                                           ? GStyles.colorPrimary
                                           : Colors.grey,
                                       borderRadius:
-                                          BorderRadius.circular(8.sp)),
+                                          BorderRadius.circular(Constants.RADIO_BUTTONS)),
                                   child: Padding(
                                     padding: EdgeInsets.all(10.sp),
                                     child: Text("Anterior",
                                         style: context.textTheme.bodyText1
-                                            ?.copyWith(
-                                                color:
-                                                    bookPageEntity.previous !=
-                                                            null
-                                                        ? Colors.white
-                                                        : Colors.black)),
+                                            ?.copyWith(color: Colors.white)),
                                   )),
                             ),
                           ),
@@ -148,7 +152,7 @@ class _BookScreenState extends State<BookScreen> {
                                   decoration: BoxDecoration(
                                       color: GStyles.colorPrimary,
                                       borderRadius:
-                                          BorderRadius.circular(8.sp)),
+                                          BorderRadius.circular(Constants.RADIO_BUTTONS)),
                                   child: Padding(
                                     padding: EdgeInsets.all(10.sp),
                                     child: Text("Siguiente",
@@ -183,7 +187,7 @@ class _BookScreenState extends State<BookScreen> {
             child: Text(
               name,
               style: context.textTheme.bodyText1
-                  ?.copyWith(fontWeight: FontWeight.bold, fontSize: 11.sp),
+                  ?.copyWith(fontWeight: FontWeight.bold, fontSize: 12.sp),
             )));
   }
 }

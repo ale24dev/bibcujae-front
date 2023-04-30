@@ -70,18 +70,19 @@ class _HeaderBookScreenState extends State<HeaderBookScreen> {
             Text(
               "Total de libros",
               style: context.textTheme.bodyText1
-                  ?.copyWith(fontWeight: FontWeight.bold),
+                  ?.copyWith(fontWeight: FontWeight.bold, fontSize: 13.sp),
             ),
             SizedBox(width: 1.w),
             Container(
                 decoration: BoxDecoration(
                     color: GStyles.colorPrimary,
-                    borderRadius: BorderRadius.circular(8.sp)),
+                    borderRadius:
+                        BorderRadius.circular(Constants.RADIO_BUTTONS)),
                 child: Padding(
                   padding: EdgeInsets.all(6.sp),
                   child: Text(widget.bookPageEntity.count.toString(),
                       style: context.textTheme.bodyText1
-                          ?.copyWith(color: Colors.white, fontSize: 11.sp)),
+                          ?.copyWith(color: Colors.white, fontSize: 12.sp)),
                 ))
           ],
         ),
@@ -96,13 +97,15 @@ class _HeaderBookScreenState extends State<HeaderBookScreen> {
               child: Container(
                   decoration: BoxDecoration(
                       color: Colors.grey,
-                      borderRadius: BorderRadius.circular(5.sp)),
+                      borderRadius:
+                          BorderRadius.circular(Constants.RADIO_BUTTONS)),
                   child: Padding(
                     padding: EdgeInsets.all(3.sp),
                     child: Container(
                       decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(5.sp)),
+                          borderRadius:
+                              BorderRadius.circular(Constants.RADIO_BUTTONS)),
                       child: Padding(
                         padding: EdgeInsets.all(8.sp),
                         child: Row(
@@ -129,7 +132,8 @@ class _HeaderBookScreenState extends State<HeaderBookScreen> {
               child: Container(
                   decoration: BoxDecoration(
                       color: Colors.black,
-                      borderRadius: BorderRadius.circular(5.sp)),
+                      borderRadius:
+                          BorderRadius.circular(Constants.RADIO_BUTTONS)),
                   child: Padding(
                     padding: EdgeInsets.all(8.sp),
                     child: Row(
@@ -150,10 +154,8 @@ class _HeaderBookScreenState extends State<HeaderBookScreen> {
   }
 
   Widget addBookDialog(BuildContext context) {
-    print(emptyRequiredFields);
     return SimpleDialog(
-      contentPadding:
-          EdgeInsets.symmetric(horizontal: Constants.MARGIN, vertical: 2.h),
+      contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
       title: Center(
           child: Text("Añadir libro",
               style: context.textTheme.bodyText1
@@ -219,7 +221,7 @@ class _HeaderBookScreenState extends State<HeaderBookScreen> {
                           notes: null,
                           publicationYear: null,
                           responsibilityMention: null,
-                          addressCode: null,
+                          domCode: null,
                           isbn: isbnController.text,
                           dewey: deweyController.text,
                           event: null,

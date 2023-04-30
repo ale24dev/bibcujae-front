@@ -67,7 +67,7 @@ class BookRepository {
       Map<String, dynamic> map = {
         'titulo': book.title,
         'autor': book.author,
-        'cod_domicilio': book.addressCode,
+        'cod_domicilio': book.domCode,
         'isbn': book.isbn,
         'dewey': book.dewey,
         'publicacion': book.publication,
