@@ -10,9 +10,11 @@ import '../../../models/ejemplar_base_model.dart';
 part 'ejemplar_state.dart';
 
 class EjemplarCubit extends Cubit<EjemplarState> {
+  late List<dynamic> listEjemplares;
   EjemplarCubit() : super(EjemplarInitial());
 
   void getEjemplaresByBook(BookBaseModel book) async {
+    listEjemplares = [];
     emit(EjemplarLoading());
 
     ApiResult apiResult = await serviceLocator<EjemplarRepository>()
@@ -22,6 +24,7 @@ class EjemplarCubit extends Cubit<EjemplarState> {
         if (apiResult.responseObject.isEmpty) {
           emit(EjemplarEmpty());
         } else {
+          listEjemplares.addAll(apiResult.responseObject);
           emit(EjemplarLoaded(apiResult: apiResult));
         }
         break;
@@ -34,7 +37,6 @@ class EjemplarCubit extends Cubit<EjemplarState> {
     emit(EjemplarLoading());
     ApiResult apiResult = await serviceLocator<EjemplarRepository>()
         .createEjemplar(ejemplarBaseModel);
-    print("STATUS CODE:" + apiResult.statusCode.toString());
     switch (apiResult.statusCode) {
       case 200:
         emit(EjemplarCreated(apiResult: apiResult));
@@ -44,10 +46,25 @@ class EjemplarCubit extends Cubit<EjemplarState> {
     }
   }
 
-  void deleteEjemplar(String ejemplarId) async {
+  void updateEjemplar(
+      EjemplarBaseModel ejemplarBaseModel, String ejemplarId) async {
     emit(EjemplarLoading());
     ApiResult apiResult = await serviceLocator<EjemplarRepository>()
-        .deleteEjemplar(ejemplarId);
+        .updateEjemplar(ejemplarBaseModel, ejemplarId);
+    print("STATUS CODE:" + apiResult.statusCode.toString());
+    switch (apiResult.statusCode) {
+      case 200:
+        emit(EjemplarUpdated());
+        break;
+      default:
+        emit(EjemplarError(apiResult: apiResult));
+    }
+  }
+
+  void deleteEjemplar(String ejemplarId) async {
+    emit(EjemplarLoading());
+    ApiResult apiResult =
+        await serviceLocator<EjemplarRepository>().deleteEjemplar(ejemplarId);
     print("STATUS CODE:" + apiResult.statusCode.toString());
     switch (apiResult.statusCode) {
       case 200:

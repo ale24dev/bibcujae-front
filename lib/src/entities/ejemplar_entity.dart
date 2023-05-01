@@ -18,7 +18,7 @@ class EjemplarEntity {
 
   final String? ubicacion;
 
-  final String? viasAdq;
+  final String? viaAdq;
 
   final String? procedencia;
 
@@ -38,7 +38,7 @@ class EjemplarEntity {
     this.subdivision1,
     this.subdivision2,
     this.ubicacion,
-    this.viasAdq,
+    this.viaAdq,
   });
 
   @override
@@ -52,7 +52,7 @@ class EjemplarEntity {
         ' noIngreso: $noIngreso,'
         ' fechaIngreso: $fechaIngreso,'
         ' ubicacion: $ubicacion,'
-        ' viasAdq: $viasAdq,'
+        ' viaAdq: $viaAdq,'
         ' procedencia: $procedencia,'
         ' precio: $precio,'
         ' estadoEjemplar: $estadoEjemplar'

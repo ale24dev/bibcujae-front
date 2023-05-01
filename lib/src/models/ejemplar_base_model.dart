@@ -32,8 +32,8 @@ class EjemplarBaseModel {
 
   final String? ubicacion;
 
-  @JsonKey(name: "vias_adq")
-  final String? viasAdq;
+  @JsonKey(name: "via_adq")
+  final String? viaAdq;
 
   final String? procedencia;
 
@@ -53,7 +53,7 @@ class EjemplarBaseModel {
     this.subdivision1,
     this.subdivision2,
     this.ubicacion,
-    this.viasAdq,
+    this.viaAdq,
     this.estadoEjemplar,
   });
 
@@ -75,7 +75,7 @@ class EjemplarBaseModel {
       subdivision1: ejemplarEntity.subdivision1,
       subdivision2: ejemplarEntity.subdivision2,
       ubicacion: ejemplarEntity.ubicacion,
-      viasAdq: ejemplarEntity.viasAdq,
+      viaAdq: ejemplarEntity.viaAdq,
     );
     return ejemplar;
   }

@@ -25,6 +25,8 @@ class EjemplarLoaded extends EjemplarState {
   const EjemplarLoaded({required this.apiResult});
 }
 
+class EjemplarUpdated extends EjemplarState {}
+
 class EjemplarDeleted extends EjemplarState {}
 
 class EjemplarError extends EjemplarState {

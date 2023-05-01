@@ -20,7 +20,7 @@ EjemplarBaseModel _$EjemplarBaseModelFromJson(Map<String, dynamic> json) =>
       subdivision1: json['subdivision1'] as String?,
       subdivision2: json['subdivision2'] as String?,
       ubicacion: json['ubicacion'] as String?,
-      viasAdq: json['vias_adq'] as String?,
+      viaAdq: json['via_adq'] as String?,
       estadoEjemplar: EstadoEjemplarBaseModel.fromJson(
           json['estado_ejemplar'] as Map<String, dynamic>),
     );
@@ -35,7 +35,7 @@ Map<String, dynamic> _$EjemplarBaseModelToJson(EjemplarBaseModel instance) =>
       'no_ingreso': instance.noIngreso,
       'fecha_ingreso': instance.fechaIngreso,
       'ubicacion': instance.ubicacion,
-      'vias_adq': instance.viasAdq,
+      'via_adq': instance.viaAdq,
       'procedencia': instance.procedencia,
       'precio': instance.precio,
       'estado_ejemplar': instance.estadoEjemplar?.toJson(),

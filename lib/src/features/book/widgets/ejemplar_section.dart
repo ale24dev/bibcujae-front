@@ -1,5 +1,5 @@
 import 'package:bibcujae/src/features/book/cubit/ejemplar_cubit.dart';
-import 'package:bibcujae/src/features/book/widgets/ejemplares_data_source.dart';
+import 'package:bibcujae/src/features/book/widgets/ejemplar_data_source.dart';
 import 'package:bibcujae/src/shared/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,8 +9,11 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../../resources/general_styles.dart';
 import '../../../models/book_base_model.dart';
+import '../../../models/ejemplar_base_model.dart';
 import '../../../shared/constants/constants.dart';
-import 'add_ejemplar.dart';
+import '../../../shared/utils.dart';
+import '../constants/add_or_edit_enum.dart';
+import 'add_or_edit_ejemplar.dart';
 
 class EjemplaresSection extends StatefulWidget {
   const EjemplaresSection({
@@ -25,7 +28,7 @@ class EjemplaresSection extends StatefulWidget {
 class _EjemplaresSectionState extends State<EjemplaresSection> {
   late TextEditingController subdivision1Controller;
   late TextEditingController subdivision2Controller;
-  late TextEditingController viasAdqController;
+  late TextEditingController viaAdqController;
   late TextEditingController precioController;
   late TextEditingController procedenciaController;
   late TextEditingController ubicacionController;
@@ -35,7 +38,7 @@ class _EjemplaresSectionState extends State<EjemplaresSection> {
     super.initState();
     subdivision1Controller = TextEditingController();
     subdivision2Controller = TextEditingController();
-    viasAdqController = TextEditingController();
+    viaAdqController = TextEditingController();
     precioController = TextEditingController();
     procedenciaController = TextEditingController();
     ubicacionController = TextEditingController();
@@ -45,11 +48,37 @@ class _EjemplaresSectionState extends State<EjemplaresSection> {
   void dispose() {
     subdivision1Controller.dispose();
     subdivision2Controller.dispose();
-    viasAdqController.dispose();
+    viaAdqController.dispose();
     precioController.dispose();
     procedenciaController.dispose();
     ubicacionController.dispose();
     super.dispose();
+  }
+
+  dynamic editEjemplarDialogCallback(String ejemplarId) {
+    ///Obtener el ejemplar a partir del id enviado por parametro
+    EjemplarBaseModel ejemplar = Utils.getEjemplarById(
+        context.read<EjemplarCubit>().listEjemplares, ejemplarId);
+
+    ///Inicializamos los controladores
+    subdivision1Controller.text = ejemplar.subdivision1 ?? "";
+    subdivision2Controller.text = ejemplar.subdivision2 ?? "";
+    precioController.text = ejemplar.precio?.toString() ?? "";
+    procedenciaController.text = ejemplar.procedencia ?? "";
+    ubicacionController.text = ejemplar.ubicacion ?? "";
+    viaAdqController.text = ejemplar.viaAdq ?? "";
+
+    return addOrEditEjemplarDialog(
+        context: context,
+        precioController: precioController,
+        procedenciaController: procedenciaController,
+        subdivision1Controller: subdivision1Controller,
+        subdivision2Controller: subdivision2Controller,
+        ubicacionController: ubicacionController,
+        viaAdqController: viaAdqController,
+        bookBaseModel: widget.bookBaseModel,
+        addOrEditEjemplarEnum: AddOrEditEjemplarEnum.EDIT,
+        ejemplarId: ejemplarId);
   }
 
   @override
@@ -64,7 +93,8 @@ class _EjemplaresSectionState extends State<EjemplaresSection> {
             listEjemplaresOfBook = state.apiResult.responseObject;
             ejemplarDataSource = EjemplarDataSource(
                 listEjemplaresBaseModel: listEjemplaresOfBook,
-                context: context);
+                context: context,
+                editRowCallBack: editEjemplarDialogCallback);
           }
           switch (state.runtimeType) {
             case EjemplarLoading:
@@ -92,15 +122,34 @@ class _EjemplaresSectionState extends State<EjemplaresSection> {
               // return Center(
               //     child: (state as EjemplarCreated).apiResult.responseObject);
               return const Center(child: CircularProgressIndicator());
+            case EjemplarUpdated:
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: GStyles.colorPrimary,
+                    content: const Text('Ejemplar actualizado correctamente'),
+                  ),
+                );
+
+                ///Cerramos el dialog de eliminar ejemplar
+                Navigator.pop(context);
+                context
+                    .read<EjemplarCubit>()
+                    .getEjemplaresByBook(widget.bookBaseModel);
+              });
+              // return Center(
+              //     child: (state as EjemplarCreated).apiResult.responseObject);
+              return const Center(child: CircularProgressIndicator());
 
             case EjemplarDeleted:
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      backgroundColor: GStyles.colorPrimary,
-                      content: const Text('Ejemplar eliminado correctamente'),
-                    ),
-                  );
+                  SnackBar(
+                    backgroundColor: GStyles.colorPrimary,
+                    content: const Text('Ejemplar eliminado correctamente'),
+                  ),
+                );
+
                 ///Cerramos el dialog de eliminar ejemplar
                 Navigator.pop(context);
                 context
@@ -126,18 +175,22 @@ class _EjemplaresSectionState extends State<EjemplaresSection> {
                             onTap: () {
                               showDialog(
                                   context: context,
-                                  builder: ((context) => addEjemplarDialog(
-                                      context: context,
-                                      precioController: precioController,
-                                      procedenciaController:
-                                          procedenciaController,
-                                      subdivision1Controller:
-                                          subdivision1Controller,
-                                      subdivision2Controller:
-                                          subdivision2Controller,
-                                      ubicacionController: ubicacionController,
-                                      viasAdqController: viasAdqController,
-                                      bookBaseModel: widget.bookBaseModel)));
+                                  builder: ((context) =>
+                                      addOrEditEjemplarDialog(
+                                          context: context,
+                                          precioController: precioController,
+                                          procedenciaController:
+                                              procedenciaController,
+                                          subdivision1Controller:
+                                              subdivision1Controller,
+                                          subdivision2Controller:
+                                              subdivision2Controller,
+                                          ubicacionController:
+                                              ubicacionController,
+                                          viaAdqController: viaAdqController,
+                                          bookBaseModel: widget.bookBaseModel,
+                                          addOrEditEjemplarEnum:
+                                              AddOrEditEjemplarEnum.ADD)));
                             },
                             child: Container(
                                 decoration: BoxDecoration(

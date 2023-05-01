@@ -9,7 +9,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:bibcujae/src/models/book_base_model.dart';
 
 import '../../../../resources/images.dart';
-import '../widgets/ejemplares_section.dart';
+import '../widgets/ejemplar_section.dart';
 
 class BookDetailsScreen extends StatefulWidget {
   const BookDetailsScreen({super.key, required this.bookBaseModel});

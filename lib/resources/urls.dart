@@ -32,4 +32,5 @@ class Urls {
   static String get getEjemplaresOfBook => '$document/ejemplar/libro';
   static String get createEjemplarToBook => '$document/ejemplar/create';
   static String get deleteEjemplar => '$document/ejemplar';
+  static String get updateEjemplar => '$document/ejemplar/update';
 }

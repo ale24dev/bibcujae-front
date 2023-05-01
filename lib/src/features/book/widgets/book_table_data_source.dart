@@ -33,7 +33,11 @@ class BookDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((e) {
       return Container(
-        alignment: Alignment.centerLeft,
+        alignment: e.columnName == "Título" ||
+                e.columnName == "Autor" ||
+                e.columnName == "Publicación"
+            ? Alignment.centerLeft
+            : Alignment.center,
         padding: const EdgeInsets.all(8.0),
         child: Text(e.value.toString()),
       );

@@ -1,0 +1,1 @@
+enum AddOrEditEjemplarEnum { ADD, EDIT}

@@ -26,12 +26,12 @@ class _BookScreenState extends State<BookScreen> {
   late BookDataSource bookDataSource;
   late BookPageEntity bookPageEntity;
 
-  int rowsSelected = 0;
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(Constants.RADIO_BUTTONS)),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(Constants.RADIO_BUTTONS)),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: BlocBuilder<BookCubit, BookState>(
@@ -62,32 +62,33 @@ class _BookScreenState extends State<BookScreen> {
                   children: [
                     ///Cabecera de la vista libros
                     HeaderBookScreen(bookPageEntity: bookPageEntity),
-
                     Expanded(
                       child: SfDataGrid(
                         // onSelectionChanged: (addedRows, removedRows) {
-                        //   addedRows.isEmpty
-                        //       ? rowsSelected -= 1
-                        //       : rowsSelected += 1;
+                        //   controller.selectedRows.addAll(addedRows);
                         // },
                         //checkboxShape: [],
-                        //selectionMode: SelectionMode.multiple,
-                        //showCheckboxColumn: true,
-                        // checkboxColumnSettings:
-                        //     const DataGridCheckboxColumnSettings(
-                        //         showCheckboxOnHeader: true),
-                        gridLinesVisibility: GridLinesVisibility.horizontal,
-                        columnResizeMode: ColumnResizeMode.onResizeEnd,
+                        // selectionMode: SelectionMode.multiple,
+                        // showCheckboxColumn: true,
+                        // // checkboxColumnSettings:
+                        // //     const DataGridCheckboxColumnSettings(
+                        // //         showCheckboxOnHeader: true),
+
+                        // gridLinesVisibility: GridLinesVisibility.horizontal,
+                        // columnResizeMode: ColumnResizeMode.onResizeEnd,
                         source: bookDataSource,
                         columnWidthMode: ColumnWidthMode.fill,
                         allowSorting: true,
+                        // controller: controller,
                         onCellTap: (details) {
-                          context.go(Uri(path: '/book', queryParameters: {
-                            'idBook': bookPageEntity
-                                .results[details.rowColumnIndex.rowIndex - 1]
-                                .bookId
-                                .toString()
-                          }).toString());
+                          if (details.rowColumnIndex.rowIndex != 0) {
+                            context.go(Uri(path: '/book', queryParameters: {
+                              'idBook': bookPageEntity
+                                  .results[details.rowColumnIndex.rowIndex - 1]
+                                  .bookId
+                                  .toString()
+                            }).toString());
+                          }
                         },
                         columns: <GridColumn>[
                           gridColumn(name: 'Título'),
@@ -123,8 +124,8 @@ class _BookScreenState extends State<BookScreen> {
                                       color: bookPageEntity.previous != null
                                           ? GStyles.colorPrimary
                                           : Colors.grey,
-                                      borderRadius:
-                                          BorderRadius.circular(Constants.RADIO_BUTTONS)),
+                                      borderRadius: BorderRadius.circular(
+                                          Constants.RADIO_BUTTONS)),
                                   child: Padding(
                                     padding: EdgeInsets.all(10.sp),
                                     child: Text("Anterior",
@@ -151,8 +152,8 @@ class _BookScreenState extends State<BookScreen> {
                               child: Container(
                                   decoration: BoxDecoration(
                                       color: GStyles.colorPrimary,
-                                      borderRadius:
-                                          BorderRadius.circular(Constants.RADIO_BUTTONS)),
+                                      borderRadius: BorderRadius.circular(
+                                          Constants.RADIO_BUTTONS)),
                                   child: Padding(
                                     padding: EdgeInsets.all(10.sp),
                                     child: Text("Siguiente",

@@ -7,23 +7,29 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../models/book_base_model.dart';
 import '../../../shared/utils.dart';
+import '../constants/add_or_edit_enum.dart';
 import '../cubit/ejemplar_cubit.dart';
 
-Widget addEjemplarDialog({
+Widget addOrEditEjemplarDialog({
   required BuildContext context,
   required BookBaseModel bookBaseModel,
   //required TextEditingController codBarrasController,
   required TextEditingController subdivision1Controller,
   required TextEditingController subdivision2Controller,
-  required TextEditingController viasAdqController,
+  required TextEditingController viaAdqController,
   required TextEditingController precioController,
   required TextEditingController procedenciaController,
   required TextEditingController ubicacionController,
+  required AddOrEditEjemplarEnum addOrEditEjemplarEnum,
+  String? ejemplarId,
 }) {
   return SimpleDialog(
     contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
     title: Center(
-        child: Text("Añadir ejemplar",
+        child: Text(
+            addOrEditEjemplarEnum == AddOrEditEjemplarEnum.ADD
+                ? "Añadir ejemplar"
+                : "Actualizar ejemplar",
             style: context.textTheme.bodyText1
                 ?.copyWith(fontWeight: FontWeight.bold, fontSize: 15.sp))),
     children: [
@@ -39,7 +45,7 @@ Widget addEjemplarDialog({
       addEjemplarSection(
           context: context,
           title: "Vía de adquisición",
-          controller: viasAdqController),
+          controller: viaAdqController),
       addEjemplarSection(
           context: context,
           title: "Procedencia",
@@ -82,16 +88,24 @@ Widget addEjemplarDialog({
                       ubicacion: ubicacionController.text.isEmpty
                           ? null
                           : ubicacionController.text,
-                      viasAdq: viasAdqController.text.isEmpty
+                      viaAdq: viaAdqController.text.isEmpty
                           ? null
-                          : subdivision2Controller.text);
+                          : viaAdqController.text);
                   EjemplarBaseModel ejemplarBaseModel =
                       EjemplarBaseModel.parseEntityToModel(ejemplarEntity);
-                  context
-                      .read<EjemplarCubit>()
-                      .createEjemplar(ejemplarBaseModel);
+                  if (addOrEditEjemplarEnum == AddOrEditEjemplarEnum.ADD) {
+                    context
+                        .read<EjemplarCubit>()
+                        .createEjemplar(ejemplarBaseModel);
+                  } else {
+                    context.read<EjemplarCubit>().updateEjemplar(
+                        ejemplarBaseModel, ejemplarId!.toString());
+                  }
                 },
-                child: Text("Añadir",
+                child: Text(
+                    addOrEditEjemplarEnum == AddOrEditEjemplarEnum.ADD
+                        ? "Añadir"
+                        : "Actualizar",
                     style: context.textTheme.bodyText1
                         ?.copyWith(color: Colors.white))),
           ],

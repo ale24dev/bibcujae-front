@@ -35,4 +35,18 @@ abstract class Utils {
 
     return formattedDate;
   }
+
+  static dynamic getEjemplarById(
+      List<dynamic> ejemplarList, String ejemplarId) {
+    print("AAAAAAAAAAAAA: " + ejemplarId);
+    print("BBBBBBBBBBBBBB: " + ejemplarList.length.toString());
+    for (var ejemplar in ejemplarList) {
+      print("A: " + ejemplar.ejemplarId.toString());
+      print("B: " + int.parse(ejemplarId).toString());
+      if (ejemplar.ejemplarId == int.parse(ejemplarId)) {
+        return ejemplar;
+      }
+    }
+    return null;
+  }
 }
