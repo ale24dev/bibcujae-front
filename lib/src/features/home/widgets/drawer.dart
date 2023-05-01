@@ -16,20 +16,26 @@ class DrawerSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> listDrawerSections = ["Búsqueda", "Libros", "Préstamos", "Estadísticas"];
+    List<String> listDrawerSections = [
+      "Búsqueda",
+      "Libros",
+      "Préstamos",
+      "Estadísticas"
+    ];
+
+    final double WIDTH_DRAWER_SECTION = 15.w;
 
     return Container(
-      width: 20.w,
+      width: WIDTH_DRAWER_SECTION,
       color: GStyles.darkTheme,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: Constants.MARGIN),
-        child:
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Container(
             margin: EdgeInsets.symmetric(vertical: 4.h),
             child: Text(Constants.NAMEAPP,
-                style: context.textTheme.bodyText1
-                    ?.copyWith(color: Colors.white)),
+                style:
+                    context.textTheme.bodyText1?.copyWith(color: Colors.white)),
           ),
           Expanded(
             child: BlocBuilder<DrawerCubit, DrawerState>(

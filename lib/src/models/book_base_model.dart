@@ -1,4 +1,8 @@
+import 'package:bibcujae/src/features/book/cubit/ejemplar_cubit.dart';
+import 'package:bibcujae/src/models/ejemplar_base_model.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../entities/ejemplar_entity.dart';
 
 part 'book_base_model.g.dart';
 
@@ -6,7 +10,7 @@ part 'book_base_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class BookBaseModel {
   @JsonKey(name: "libro_id")
-  final int bookId;
+  final int? bookId;
 
   @JsonKey(name: "titulo")
   final String? title;
@@ -14,13 +18,13 @@ class BookBaseModel {
   @JsonKey(name: "entrada")
   final String? entry;
 
-  @JsonKey(name: "tipoAutor")
+  @JsonKey(name: "tipo_autor")
   final String? authorType;
 
   @JsonKey(name: "autor")
   final String? author;
 
-  @JsonKey(name: "otrosAutores")
+  @JsonKey(name: "otros_autores")
   final String? otherAuthors;
 
   @JsonKey(name: "edicion")
@@ -32,14 +36,14 @@ class BookBaseModel {
   @JsonKey(name: "notas")
   final String? notes;
 
-  @JsonKey(name: "annoPub")
+  @JsonKey(name: "anno_pub")
   final String? publicationYear;
 
-  @JsonKey(name: "mencionResp")
+  @JsonKey(name: "mencion_resp")
   final String? responsibilityMention;
 
-  @JsonKey(name: "codDomicilio")
-  final String? addressCode;
+  @JsonKey(name: "cod_domicilio")
+  final String? domCode;
 
   @JsonKey(name: "isbn")
   final String? isbn;
@@ -50,7 +54,7 @@ class BookBaseModel {
   @JsonKey(name: "evento")
   final String? event;
 
-  @JsonKey(name: "otrosEventos")
+  @JsonKey(name: "otros_eventos")
   final String? otherEvents;
 
   @JsonKey(name: "publicacion")
@@ -59,7 +63,7 @@ class BookBaseModel {
   @JsonKey(name: "colacion")
   final String? collation;
 
-  @JsonKey(name: "otrosTitulos")
+  @JsonKey(name: "otros_titulos")
   final String? otherTitles;
 
   @JsonKey(name: "folleto")
@@ -68,10 +72,10 @@ class BookBaseModel {
   @JsonKey(name: "referencia")
   final String? reference;
 
-  @JsonKey(name: "letrasEnt")
+  @JsonKey(name: "letras_ent")
   final String? entryLetters;
 
-  @JsonKey(name: "letraTitulo")
+  @JsonKey(name: "letra_titulo")
   final String? titleLetters;
 
   @JsonKey(name: "clasif")
@@ -95,7 +99,7 @@ class BookBaseModel {
     required this.notes,
     required this.publicationYear,
     required this.responsibilityMention,
-    required this.addressCode,
+    required this.domCode,
     required this.isbn,
     required this.dewey,
     required this.event,

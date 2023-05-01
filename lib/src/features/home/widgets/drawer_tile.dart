@@ -3,6 +3,7 @@ import 'package:bibcujae/src/shared/extensions.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../resources/general_styles.dart';
+import '../../../shared/constants/constants.dart';
 import '../constants/drawer_items.dart';
 
 class DrawerTile extends StatelessWidget {
@@ -29,7 +30,7 @@ class DrawerTile extends StatelessWidget {
             decoration: BoxDecoration(
                 color:
                     isSelected ? GStyles.drawerSelectColor : GStyles.darkTheme,
-                borderRadius: BorderRadius.circular(4.0)),
+                borderRadius: BorderRadius.circular(Constants.RADIO_BUTTONS)),
             child: Padding(
               padding: EdgeInsets.all(8.sp),
               child: Row(

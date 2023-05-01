@@ -12,7 +12,7 @@ class BookDataSource extends DataGridSource {
               DataGridCell<String>(columnName: 'Título', value: e.title),
               DataGridCell<String>(columnName: 'Autor', value: e.author),
               DataGridCell<String>(
-                  columnName: 'Cod de Domicilio', value: e.addressCode),
+                  columnName: 'Cod de Domicilio', value: e.domCode),
               DataGridCell<String>(columnName: 'ISBN', value: e.isbn),
               DataGridCell<String>(columnName: 'Dewey', value: e.dewey),
               DataGridCell<String>(
@@ -33,7 +33,11 @@ class BookDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((e) {
       return Container(
-        alignment: Alignment.center,
+        alignment: e.columnName == "Título" ||
+                e.columnName == "Autor" ||
+                e.columnName == "Publicación"
+            ? Alignment.centerLeft
+            : Alignment.center,
         padding: const EdgeInsets.all(8.0),
         child: Text(e.value.toString()),
       );

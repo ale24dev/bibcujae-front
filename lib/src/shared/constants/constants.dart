@@ -5,14 +5,10 @@ abstract class Constants {
   static String NAMEAPP = "BiblioCUJAE";
 
   ///Margen horizontal de los layouts
-  static double MARGIN = 1.w;
+  static double MARGIN = 2.w;
 
-  ///Altura de las cabeceras de los appBar
-  static double HEIGHT_HEADER = 15.h;
+  /// Formator de las fechas.
+  static const String BACK_DATE_FORMAT = "yyyy-MM-ddTHH:mm:ssZ";
 
-  ///Altura de las imagenes de perfile
-  static double HEIGHT_PROFILE_IMAGE = 40.sp;
-
-  ///Dominio de descarga de la nube
-  static String WEB_STORAGE = "https://pism-app.s3.amazonaws.com/";
+  static final double RADIO_BUTTONS = 5.sp;
 }

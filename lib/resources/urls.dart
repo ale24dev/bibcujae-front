@@ -22,9 +22,15 @@ class Urls {
 
   ///Document Services
   static String document = "$hostApi/document";
+
   ///Books services
   static String get getAllBooks => '$document/book/all';
+  static String get createBook => '$document/book/create';
   static String get donwloadBookReport => '$document/book/writeInExcel/';
-  
-  
+
+  ///Ejemplares services
+  static String get getEjemplaresOfBook => '$document/ejemplar/libro';
+  static String get createEjemplarToBook => '$document/ejemplar/create';
+  static String get deleteEjemplar => '$document/ejemplar';
+  static String get updateEjemplar => '$document/ejemplar/update';
 }

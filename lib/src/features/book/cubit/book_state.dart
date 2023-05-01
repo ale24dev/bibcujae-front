@@ -11,6 +11,8 @@ class BookInitial extends BookState {}
 
 class BookLoading extends BookState {}
 
+class BookCreated extends BookState {}
+
 class BookLoaded extends BookState {
   final ApiResult apiResult;
 

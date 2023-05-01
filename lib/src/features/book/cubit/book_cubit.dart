@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
 import '../../../../locator.dart';
+import '../../../models/book_base_model.dart';
 import '../constants/pagination.dart';
 import '../../../shared/repository/ApiResult.dart';
 import '../../../repositories/book_repositories.dart';
@@ -11,25 +12,21 @@ part 'book_state.dart';
 class BookCubit extends Cubit<BookState> {
   BookCubit() : super(BookInitial());
 
-  ///Indice de la paginación actual
-  late int _indexPage;
+  ///Total de items por pagina
+  final int ITEMS_BY_PAGE = 20;
 
-  ///Indice de la paginación actual
-  final int ITEMS_BY_PAGE = 10;
-
-  int get indexPage => _indexPage;
+  List<BookBaseModel>? listBooks;
 
   void loadBooks({String? url, PaginationBook? paginationBook}) async {
+    listBooks = [];
     emit(BookLoading());
-
-    setPaginationIndex(paginationBook: paginationBook);
 
     final ApiResult apiResult = await serviceLocator<BookRepository>()
         .getAllBooks(url: url, items: ITEMS_BY_PAGE);
 
-    print(apiResult.statusCode);
     switch (apiResult.statusCode) {
       case 200:
+        listBooks!.addAll(apiResult.responseObject.results);
         emit(BookLoaded(apiResult: apiResult));
         break;
 
@@ -38,13 +35,19 @@ class BookCubit extends Cubit<BookState> {
     }
   }
 
-  void setPaginationIndex({PaginationBook? paginationBook}) {
-    if (paginationBook == null) {
-      _indexPage = 1;
-    } else if (paginationBook == PaginationBook.PREVIOUS) {
-      _indexPage -= 1;
-    } else {
-      _indexPage += 1;
+  void createBook({required BookBaseModel bookBaseModel}) async {
+    emit(BookLoading());
+
+    final ApiResult apiResult =
+        await serviceLocator<BookRepository>().createBook(bookBaseModel);
+
+    switch (apiResult.statusCode) {
+      case 200:
+        emit(BookCreated());
+        break;
+
+      default:
+        emit(BookError(apiResult: apiResult));
     }
   }
 }

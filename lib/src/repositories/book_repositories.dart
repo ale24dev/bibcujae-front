@@ -16,7 +16,7 @@ import '../shared/utils.dart';
 
 class BookRepository {
   Future<ApiResult<BookPageEntity>> getAllBooks(
-      {int? page, int? items, String? url}) async {
+      {int? page, required int items, String? url}) async {
     ApiResult<BookPageEntity> result = ApiResult();
     try {
       Map<String, String> headers = {
@@ -26,7 +26,7 @@ class BookRepository {
 
       Map<String, dynamic> params = {
         "page": page ?? 1,
-        "items": items ?? 10,
+        "items": items,
       };
 
       Uri targetUrl = Uri.parse(
@@ -44,6 +44,8 @@ class BookRepository {
             count: jsonDecode(response.body)["count"],
             next: jsonDecode(response.body)["next"],
             previous: jsonDecode(response.body)["previous"],
+            currentPage: jsonDecode(response.body)["current_page"],
+            numPages: jsonDecode(response.body)["num_pages"],
             results: bookList);
 
         result.responseObject = bookPageEntity;
@@ -65,7 +67,7 @@ class BookRepository {
       Map<String, dynamic> map = {
         'titulo': book.title,
         'autor': book.author,
-        'cod_domicilio': book.addressCode,
+        'cod_domicilio': book.domCode,
         'isbn': book.isbn,
         'dewey': book.dewey,
         'publicacion': book.publication,
@@ -74,35 +76,38 @@ class BookRepository {
       };
       listMaps.add(map);
     }
-    print(listMaps.length);
     Uri targetUrl = Uri.parse(Urls.donwloadBookReport);
     var response = await http.post(targetUrl,
         headers: headers, body: jsonEncode(listMaps));
-    print(response.statusCode);
 
     // Descargar el archivo Excel en el navegador
     var blob = html.Blob([response.bodyBytes],
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     var url = html.Url.createObjectUrlFromBlob(blob);
-    var link = html.document.createElement('a') as html.AnchorElement
+    html.document.createElement('a') as html.AnchorElement
       ..href = url
       ..download = 'books.xlsx'
       ..click();
     html.Url.revokeObjectUrl(url);
-    // final bytes = response.bodyBytes;
-    // const fileName = 'data.xlsx';
+  }
 
-    // final directory =
-    //     await html.window.requestFileSystem(20 * 1024 * 1024).then((fs) => fs.root);
-    // final file = await directory?.createFile(fileName);
-    // final blob = html.Blob([bytes]);
-    // final blobUrl = html.Url.createObjectUrlFromBlob(blob);
-    // final anchor = html.document.createElement('a') as html.AnchorElement
-    //   ..href = blobUrl
-    //   ..download = fileName;
-    // html.document.body?.children.add(anchor);
-    // anchor.click();
-    // html.document.body?.children.remove(anchor);
-    // html.Url.revokeObjectUrl(blobUrl);
+  Future<ApiResult<BookPageEntity>> createBook(
+      BookBaseModel bookBaseModel) async {
+    ApiResult<BookPageEntity> result = ApiResult();
+    try {
+      Map<String, String> headers = {
+        'Authorization':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNTY2MjE1LCJpYXQiOjE2ODA1NjU5MTUsImp0aSI6ImQ1Y2VkM2I3ODg4YjRiMWY4YjQ4NWI4MmFhNzc2M2ExIiwidXNlcl9pZCI6Mn0.5t1YtQgoSW4TTmttqhHtiYRJ_4W916CF1q76ZpRFjsU',
+      };
+
+      Uri targetUrl = Uri.parse(Urls.createBook);
+      var response = await http.post(targetUrl,
+          headers: headers, body: json.encode(bookBaseModel.toJson()));
+      result.statusCode = response.statusCode;
+    } catch (e) {
+      print("EROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR 1" + e.toString());
+      result.serverError = e.toString();
+    }
+    return result;
   }
 }
