@@ -1,13 +1,11 @@
 // ignore_for_file: avoid_web_libraries_in_flutter
 
 import 'dart:convert';
-import 'dart:io';
 import 'dart:html' as html;
 
 import '../../resources/urls.dart';
 import '../entities/book_page_entity.dart';
 import '../models/book_base_model.dart';
-import 'package:path_provider/path_provider.dart';
 import '../shared/repository/ApiResult.dart';
 
 import 'package:http/http.dart' as http;

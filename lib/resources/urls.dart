@@ -13,7 +13,7 @@ class Urls {
   static const String hostApi = '$host/api';
 
   ///Token provider
-  static String get login => '$auth/login';
+  static String get login => '$auth/login/';
 
   ///Auth Services
   static String auth = "$hostApi/auth";
