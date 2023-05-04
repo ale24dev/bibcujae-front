@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
+import '../../../../resources/assets.dart';
 import '../../../../resources/general_styles.dart';
-import '../../../../resources/images.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             SizedBox(
                 width: 50.w,
-                child: Image.asset(Images.imageLogin, fit: BoxFit.cover)),
+                child: Image.asset(AppAsset.imageLogin, fit: BoxFit.cover)),
             SizedBox(
               width: 50.w,
               child: Padding(
@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Center(child: Image.asset(Images.cujaeLogo, height: 26.h)),
+                    Center(child: Image.asset(AppAsset.cujaeLogo, height: 26.h)),
                     SizedBox(height: 5.sp),
                     Container(
                       alignment: Alignment.center,
