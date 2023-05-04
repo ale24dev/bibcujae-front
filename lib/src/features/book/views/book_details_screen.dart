@@ -8,7 +8,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 import 'package:bibcujae/src/models/book_base_model.dart';
 
-import '../../../../resources/images.dart';
+import '../../../../resources/assets.dart';
 import '../widgets/ejemplar_section.dart';
 
 class BookDetailsScreen extends StatefulWidget {
@@ -46,7 +46,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                   child: SizedBox(
                     height: 30.h,
                     child: Image.asset(
-                      Images.book,
+                      AppAsset.book,
                     ),
                   ),
                 ),

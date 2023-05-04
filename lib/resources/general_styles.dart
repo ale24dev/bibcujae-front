@@ -3,7 +3,8 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 
 class GStyles {
   ///Colors
-  static Color get colorPrimary => const Color.fromRGBO(40, 92, 39, 1);
+  //static Color get colorPrimary => const Color.fromRGBO(40, 92, 39, 1);
+  static Color get colorPrimary => const Color.fromRGBO(21,109,84, 1);
   static Color get colorSecondary => const Color.fromARGB(255, 39, 134, 151);
   static Color get colorCrema => const Color.fromRGBO(240,240,240, 1);
   static Color get colorFail => const Color.fromARGB(255, 197, 37, 37);

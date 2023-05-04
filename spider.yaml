@@ -1,0 +1,11 @@
+generate_tests: false
+no_comments: true
+export: false
+use_part_of: true
+package: resources
+
+groups:
+  - path: assets/images
+    class_name: AppAsset
+    file_name: assets
+    types: [ .png, .jpg, .jpeg, .webp, .webm, .bmp, .svg ]
