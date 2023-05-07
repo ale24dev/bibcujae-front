@@ -9,4 +9,5 @@ class AppAsset {
   static const String book = 'assets/images/book.png';
   static const String cujaeLogo = 'assets/images/cujae_logo.png';
   static const String imageLogin = 'assets/images/image_login.jpg';
+  static const String logo = 'assets/images/logo.png';
 }

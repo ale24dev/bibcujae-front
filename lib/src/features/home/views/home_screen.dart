@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../shared/constants/constants.dart';
 import '../../book/views/book_screen.dart';
+import '../../search/views/search_screen.dart';
 import '../../splash/splash_controller.dart';
 import '../constants/drawer_items.dart';
 import '../widgets/drawer.dart';
@@ -21,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     SplashController.initData(context);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,17 +37,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   switch (state.drawerItem) {
                     case DrawerItem.BOOKS:
                       return const BookScreen();
+
+                    case DrawerItem.SEARCH:
+                      return const SearchScreen();
                     default:
                       Container(
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(Constants.RADIO_BUTTONS)),
+                            borderRadius:
+                                BorderRadius.circular(Constants.RADIO_BUTTONS)),
                       );
                   }
                   return Container(
                     decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(Constants.RADIO_BUTTONS)),
+                        borderRadius:
+                            BorderRadius.circular(Constants.RADIO_BUTTONS)),
                   );
                 },
               ),

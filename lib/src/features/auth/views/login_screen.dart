@@ -51,6 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Center(child: Image.asset(AppAsset.cujaeLogo, height: 26.h)),
+                    //Center(child: Image.asset(AppAsset.logo, height: 26.h)),
                     SizedBox(height: 5.sp),
                     Container(
                       alignment: Alignment.center,
