@@ -26,7 +26,6 @@ abstract class Utils {
     ApiResult apiResult = await serviceLocator<BookRepository>().getAllBooks();
 
     List<BookBaseModel> listBooks = apiResult.responseObject;
-    print(listBooks.length);
     return listBooks.firstWhere((book) {
       return book.bookId == id;
     });
@@ -47,11 +46,7 @@ abstract class Utils {
 
   static dynamic getEjemplarById(
       List<dynamic> ejemplarList, String ejemplarId) {
-    print("AAAAAAAAAAAAA: " + ejemplarId);
-    print("BBBBBBBBBBBBBB: " + ejemplarList.length.toString());
     for (var ejemplar in ejemplarList) {
-      print("A: " + ejemplar.ejemplarId.toString());
-      print("B: " + int.parse(ejemplarId).toString());
       if (ejemplar.ejemplarId == int.parse(ejemplarId)) {
         return ejemplar;
       }

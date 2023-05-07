@@ -154,9 +154,9 @@ class BookRepository {
         "page": page ?? 1,
         "items": items,
       };
-
       Map<String, dynamic> body = Utils.generateParams(searchFilters);
-      Uri targetUrl = Uri.parse(
+      print("A:" + json.encode(body));
+      Uri targetUrl = Uri.parse(url ??
           "${Urls.searchBooksWithFilters}/?page=${params["page"]}&items=${params["items"]}");
       var response = await http.post(
         targetUrl,

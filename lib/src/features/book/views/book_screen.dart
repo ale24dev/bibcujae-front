@@ -37,8 +37,6 @@ class _BookScreenState extends State<BookScreen> {
         padding: const EdgeInsets.all(10.0),
         child: BlocBuilder<BookCubit, BookState>(
           builder: (context, state) {
-            print(state);
-            var cubit = context.read<BookCubit>();
 
             if (state is BookLoaded) {
               bookDataSource = BookDataSource(

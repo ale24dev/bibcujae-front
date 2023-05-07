@@ -22,6 +22,7 @@ class BookCubit extends Cubit<BookState> {
   BookBaseModel? get bookSelected => _bookSelected;
 
   void loadBooks({String? url, PaginationBook? paginationBook}) async {
+    print(url ?? "NADA");
     listBooks = [];
     emit(BookLoading());
 

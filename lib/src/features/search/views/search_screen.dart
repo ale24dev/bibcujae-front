@@ -70,7 +70,6 @@ class _SearchScreenState extends State<SearchScreen> {
         buildWhen: (oldState, newState) {
       return oldState != newState;
     }, builder: (context, state) {
-
       ///Limpiamos el valor para una nueva entrada
       valueController.clear();
 
@@ -226,6 +225,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             state.apiResult.responseObject.results);
                     bookPageEntity = state.apiResult.responseObject;
                     return BookTable(
+                        isFromSearch: true,
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadiusDirectional.circular(

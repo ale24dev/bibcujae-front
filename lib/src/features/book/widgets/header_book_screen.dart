@@ -14,9 +14,12 @@ class HeaderBookScreen extends StatefulWidget {
   const HeaderBookScreen({
     super.key,
     required this.bookPageEntity,
+    this.isFromSearch,
   });
 
   final BookPageEntity bookPageEntity;
+
+  final bool? isFromSearch;
 
   @override
   State<HeaderBookScreen> createState() => _HeaderBookScreenState();
@@ -123,30 +126,31 @@ class _HeaderBookScreenState extends State<HeaderBookScreen> {
                   )),
             ),
             SizedBox(width: 2.w),
-            InkWell(
-              onTap: () {
-                showDialog(
-                    context: context,
-                    builder: ((context) => addBookDialog(context)));
-              },
-              child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.black,
-                      borderRadius:
-                          BorderRadius.circular(Constants.RADIO_BUTTONS)),
-                  child: Padding(
-                    padding: EdgeInsets.all(8.sp),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.add, color: Colors.white),
-                        SizedBox(width: 5.sp),
-                        Text("Añadir libro",
-                            style: context.textTheme.bodyText1
-                                ?.copyWith(color: Colors.white)),
-                      ],
-                    ),
-                  )),
-            )
+            if (widget.isFromSearch != null)
+              InkWell(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      builder: ((context) => addBookDialog(context)));
+                },
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius:
+                            BorderRadius.circular(Constants.RADIO_BUTTONS)),
+                    child: Padding(
+                      padding: EdgeInsets.all(8.sp),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.add, color: Colors.white),
+                          SizedBox(width: 5.sp),
+                          Text("Añadir libro",
+                              style: context.textTheme.bodyText1
+                                  ?.copyWith(color: Colors.white)),
+                        ],
+                      ),
+                    )),
+              )
           ],
         ),
       ]),

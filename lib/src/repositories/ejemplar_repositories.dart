@@ -82,7 +82,6 @@ class EjemplarRepository {
       "precio": ejemplarBaseModel.precio,
       // "estado_ejemplar": ejemplarBaseModel.estadoEjemplar
     };
-    print(json.encode(map));
     try {
       Map<String, String> headers = {
         'Authorization':

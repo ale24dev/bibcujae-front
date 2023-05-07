@@ -4,6 +4,7 @@ import 'package:bibcujae/resources/general_styles.dart';
 import 'package:bibcujae/src/entities/book_page_entity.dart';
 import 'package:bibcujae/src/features/book/constants/pagination.dart';
 import 'package:bibcujae/src/features/book/cubit/book_cubit.dart';
+import 'package:bibcujae/src/features/search/cubit/search_cubit.dart';
 import 'package:bibcujae/src/models/book_base_model.dart';
 import 'package:bibcujae/src/shared/constants/constants.dart';
 import 'package:bibcujae/src/shared/extensions.dart';
@@ -22,7 +23,8 @@ class BookTable extends StatelessWidget {
       {super.key,
       required this.bookPageEntity,
       required this.bookDataSource,
-      this.decoration});
+      this.decoration,
+      this.isFromSearch});
 
   final BookPageEntity bookPageEntity;
 
@@ -30,13 +32,15 @@ class BookTable extends StatelessWidget {
 
   final Decoration? decoration;
 
+  final bool? isFromSearch;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: decoration,
       child: Column(
         children: [
-          ///Cabecera de la vista libros
+          ///Cabecera de la tabla de libros
           HeaderBookScreen(bookPageEntity: bookPageEntity),
           Expanded(
             child: SfDataGrid(
@@ -78,9 +82,15 @@ class BookTable extends StatelessWidget {
                 InkWell(
                   onTap: bookPageEntity.previous != null
                       ? () {
-                          context.read<BookCubit>().loadBooks(
-                              url: bookPageEntity.previous,
-                              paginationBook: PaginationBook.PREVIOUS);
+                          isFromSearch != null
+                              ? context
+                                  .read<SearchCubit>()
+                                  .searchBooksByFilters(
+                                    url: bookPageEntity.previous,
+                                  )
+                              : context.read<BookCubit>().loadBooks(
+                                  url: bookPageEntity.previous,
+                                  paginationBook: PaginationBook.PREVIOUS);
                         }
                       : null,
                   child: Padding(
@@ -108,9 +118,15 @@ class BookTable extends StatelessWidget {
                 InkWell(
                   onTap: bookPageEntity.next != null
                       ? () {
-                          context.read<BookCubit>().loadBooks(
-                              url: bookPageEntity.next,
-                              paginationBook: PaginationBook.NEXT);
+                          isFromSearch != null
+                              ? context
+                                  .read<SearchCubit>()
+                                  .searchBooksByFilters(
+                                    url: bookPageEntity.next,
+                                  )
+                              : context.read<BookCubit>().loadBooks(
+                                  url: bookPageEntity.next,
+                                  paginationBook: PaginationBook.NEXT);
                         }
                       : null,
                   child: Padding(
