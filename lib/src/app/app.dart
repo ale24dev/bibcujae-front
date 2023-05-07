@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '../features/auth/cubit/auth_cubit.dart';
+import '../features/search/cubit/search_cubit.dart';
 import '../router/router.dart';
 import '../../resources/themes.dart';
 import '../shared/constants/constants.dart';
@@ -31,6 +32,9 @@ class MyApp extends StatelessWidget {
           ),
           RepositoryProvider(
             create: (context) => EjemplarCubit(),
+          ),
+          RepositoryProvider(
+            create: (context) => SearchCubit(),
           ),
         ],
         child: MaterialApp.router(
