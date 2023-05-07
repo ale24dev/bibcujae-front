@@ -51,7 +51,6 @@ class EjemplarCubit extends Cubit<EjemplarState> {
     emit(EjemplarLoading());
     ApiResult apiResult = await serviceLocator<EjemplarRepository>()
         .updateEjemplar(ejemplarBaseModel, ejemplarId);
-    print("STATUS CODE:" + apiResult.statusCode.toString());
     switch (apiResult.statusCode) {
       case 200:
         emit(EjemplarUpdated());
@@ -65,7 +64,6 @@ class EjemplarCubit extends Cubit<EjemplarState> {
     emit(EjemplarLoading());
     ApiResult apiResult =
         await serviceLocator<EjemplarRepository>().deleteEjemplar(ejemplarId);
-    print("STATUS CODE:" + apiResult.statusCode.toString());
     switch (apiResult.statusCode) {
       case 200:
         emit(EjemplarDeleted());

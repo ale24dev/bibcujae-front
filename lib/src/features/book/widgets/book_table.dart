@@ -1,9 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:bibcujae/resources/general_styles.dart';
 import 'package:bibcujae/src/entities/book_page_entity.dart';
 import 'package:bibcujae/src/features/book/constants/pagination.dart';
 import 'package:bibcujae/src/features/book/cubit/book_cubit.dart';
+import 'package:bibcujae/src/models/book_base_model.dart';
 import 'package:bibcujae/src/shared/constants/constants.dart';
 import 'package:bibcujae/src/shared/extensions.dart';
+import 'package:bibcujae/src/shared/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -15,7 +19,10 @@ import 'header_book_screen.dart';
 
 class BookTable extends StatelessWidget {
   const BookTable(
-      {super.key, required this.bookPageEntity, required this.bookDataSource, this.decoration});
+      {super.key,
+      required this.bookPageEntity,
+      required this.bookDataSource,
+      this.decoration});
 
   final BookPageEntity bookPageEntity;
 
@@ -33,23 +40,16 @@ class BookTable extends StatelessWidget {
           HeaderBookScreen(bookPageEntity: bookPageEntity),
           Expanded(
             child: SfDataGrid(
-              // onSelectionChanged: (addedRows, removedRows) {
-              //   controller.selectedRows.addAll(addedRows);
-              // },
-              //checkboxShape: [],
-              // selectionMode: SelectionMode.multiple,
-              // showCheckboxColumn: true,
-              // // checkboxColumnSettings:
-              // //     const DataGridCheckboxColumnSettings(
-              // //         showCheckboxOnHeader: true),
-    
-              // gridLinesVisibility: GridLinesVisibility.horizontal,
-              // columnResizeMode: ColumnResizeMode.onResizeEnd,
               source: bookDataSource,
               columnWidthMode: ColumnWidthMode.fill,
               allowSorting: true,
-              // controller: controller,
-              onCellTap: (details) {
+              onCellTap: (details) async {
+                BookBaseModel? bookSelected = await Utils.getBookById(
+                    context,
+                    bookPageEntity
+                        .results[details.rowColumnIndex.rowIndex - 1].bookId!);
+                context.read<BookCubit>().selectBook(bookSelected);
+
                 if (details.rowColumnIndex.rowIndex != 0) {
                   context.go(Uri(path: '/book', queryParameters: {
                     'idBook': bookPageEntity
@@ -102,8 +102,8 @@ class BookTable extends StatelessWidget {
                 ),
                 Text(
                   "Página ${bookPageEntity.currentPage} de ${bookPageEntity.numPages}",
-                  style:
-                      context.textTheme.bodyText1?.copyWith(color: Colors.black),
+                  style: context.textTheme.bodyText1
+                      ?.copyWith(color: Colors.black),
                 ),
                 InkWell(
                   onTap: bookPageEntity.next != null

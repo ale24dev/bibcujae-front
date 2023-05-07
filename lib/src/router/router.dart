@@ -1,3 +1,4 @@
+import 'package:bibcujae/src/features/book/cubit/book_cubit.dart';
 import 'package:bibcujae/src/models/book_base_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,8 +37,8 @@ final router = GoRouter(
         path: '/book',
         builder: (context, state) {
           try {
-            BookBaseModel? bookBaseModel = Utils.getBookById(
-                context, int.parse(state.queryParams["idBook"]!));
+            BookBaseModel? bookBaseModel =
+                context.read<BookCubit>().bookSelected;
             return bookBaseModel == null
                 ? const NotFoundPage()
                 : BookDetailsScreen(bookBaseModel: bookBaseModel);

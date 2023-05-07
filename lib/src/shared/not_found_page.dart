@@ -1,3 +1,4 @@
+import 'package:bibcujae/src/shared/extensions.dart';
 import 'package:flutter/material.dart';
 
 class NotFoundPage extends StatelessWidget {
@@ -5,8 +6,11 @@ class NotFoundPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text("Página no encontrado")),
+    return Scaffold(
+      body: Center(
+          child: Text("Página no encontrada",
+              style:
+                  context.textTheme.bodyLarge?.copyWith(color: Colors.white))),
     );
   }
 }

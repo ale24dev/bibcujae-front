@@ -1,6 +1,9 @@
+import 'package:bibcujae/locator.dart';
 import 'package:bibcujae/src/entities/search_filter_entity.dart';
 import 'package:bibcujae/src/features/book/cubit/book_cubit.dart';
 import 'package:bibcujae/src/features/search/constants/constants.dart';
+import 'package:bibcujae/src/repositories/book_repositories.dart';
+import 'package:bibcujae/src/shared/repository/ApiResult.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -18,12 +21,15 @@ abstract class Utils {
     return url;
   }
 
-  static BookBaseModel? getBookById(BuildContext context, int id) {
-    if (context.read<BookCubit>().listBooks != null) {
-      List<BookBaseModel> listBooks = context.read<BookCubit>().listBooks!;
-      return listBooks.firstWhere((book) => book.bookId == id);
-    }
-    return null;
+  static Future<BookBaseModel?> getBookById(
+      BuildContext context, int id) async {
+    ApiResult apiResult = await serviceLocator<BookRepository>().getAllBooks();
+
+    List<BookBaseModel> listBooks = apiResult.responseObject;
+    print(listBooks.length);
+    return listBooks.firstWhere((book) {
+      return book.bookId == id;
+    });
   }
 
   static String capitalize(String word) {
@@ -109,7 +115,8 @@ abstract class Utils {
     switch (text) {
       case "ano de publicacion":
         return "anno_pub";
-
+      case "cod. domicilio":
+        return "cod_domicilio";
       default:
         return text;
     }

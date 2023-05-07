@@ -17,12 +17,16 @@ class BookCubit extends Cubit<BookState> {
 
   List<BookBaseModel>? listBooks;
 
+  BookBaseModel? _bookSelected;
+
+  BookBaseModel? get bookSelected => _bookSelected;
+
   void loadBooks({String? url, PaginationBook? paginationBook}) async {
     listBooks = [];
     emit(BookLoading());
 
     final ApiResult apiResult = await serviceLocator<BookRepository>()
-        .getAllBooks(url: url, items: ITEMS_BY_PAGE);
+        .getBoksWithPag(url: url, items: ITEMS_BY_PAGE);
 
     switch (apiResult.statusCode) {
       case 200:
@@ -49,5 +53,9 @@ class BookCubit extends Cubit<BookState> {
       default:
         emit(BookError(apiResult: apiResult));
     }
+  }
+
+  void selectBook(BookBaseModel? bookSelected) {
+    _bookSelected = bookSelected;
   }
 }

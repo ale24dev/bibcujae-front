@@ -1,15 +1,11 @@
 import 'package:bibcujae/src/entities/book_page_entity.dart';
-import 'package:bibcujae/src/entities/search_filter_entity.dart';
 import 'package:bibcujae/src/features/book/widgets/book_table.dart';
 import 'package:bibcujae/src/features/book/widgets/book_table_data_source.dart';
 import 'package:bibcujae/src/features/search/widgets/section_filters.dart';
-import 'package:bibcujae/src/models/book_base_model.dart';
 import 'package:bibcujae/src/shared/extensions.dart';
-import 'package:bibcujae/src/shared/utils.dart';
 import 'package:bibcujae/src/shared/widgets/generic_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 import '../../../../resources/general_styles.dart';
@@ -34,6 +30,13 @@ List<String> listRules = [
   "ISBN",
   "Materia",
   "Año de Publicación",
+  "Edición",
+  "Serie",
+  "Cod. Domicilio",
+  "Colación",
+  "Idioma",
+  "Evento",
+  "País",
 ];
 
 List<String> listOptions = [
@@ -67,7 +70,6 @@ class _SearchScreenState extends State<SearchScreen> {
         buildWhen: (oldState, newState) {
       return oldState != newState;
     }, builder: (context, state) {
-      print(state);
 
       ///Limpiamos el valor para una nueva entrada
       valueController.clear();
@@ -218,27 +220,24 @@ class _SearchScreenState extends State<SearchScreen> {
               Expanded(
                 child: BlocBuilder<SearchCubit, SearchState>(
                     builder: (context, state) {
-                  print(state);
                   if (state is SearchLoaded) {
                     bookDataSource = BookDataSource(
                         listBooksBaseModel:
                             state.apiResult.responseObject.results);
                     bookPageEntity = state.apiResult.responseObject;
-                    return Expanded(
-                      child: BookTable(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadiusDirectional.circular(
-                                  Constants.RADIO_BUTTONS),
-                              boxShadow: [
-                                BoxShadow(
-                                    blurRadius: 1.0,
-                                    spreadRadius: 4.0,
-                                    color: Colors.black.withOpacity(.02))
-                              ]),
-                          bookPageEntity: bookPageEntity,
-                          bookDataSource: bookDataSource),
-                    );
+                    return BookTable(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadiusDirectional.circular(
+                                Constants.RADIO_BUTTONS),
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 1.0,
+                                  spreadRadius: 4.0,
+                                  color: Colors.black.withOpacity(.02))
+                            ]),
+                        bookPageEntity: bookPageEntity,
+                        bookDataSource: bookDataSource);
                   }
                   switch (state.runtimeType) {
                     case SearchLoading:

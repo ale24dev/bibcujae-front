@@ -15,7 +15,35 @@ import 'package:http/http.dart' as http;
 import '../shared/utils.dart';
 
 class BookRepository {
-  Future<ApiResult<BookPageEntity>> getAllBooks(
+  Future<ApiResult> getAllBooks() async {
+    ApiResult result = ApiResult();
+    try {
+      Map<String, String> headers = {
+        'Authorization':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNTY2MjE1LCJpYXQiOjE2ODA1NjU5MTUsImp0aSI6ImQ1Y2VkM2I3ODg4YjRiMWY4YjQ4NWI4MmFhNzc2M2ExIiwidXNlcl9pZCI6Mn0.5t1YtQgoSW4TTmttqhHtiYRJ_4W916CF1q76ZpRFjsU',
+      };
+
+      Uri targetUrl = Uri.parse(Urls.getAllBooks);
+      var response = await http.get(targetUrl, headers: headers);
+      result.statusCode = response.statusCode;
+      if (response.statusCode == 200) {
+        //var decodeResponse = jsonDecode(response.body);
+        List<dynamic> jsonList = jsonDecode(response.body);
+
+        List<BookBaseModel> bookList = jsonList
+            .map((currentUnmapped) => BookBaseModel.fromJson(currentUnmapped))
+            .toList();
+
+        result.responseObject = bookList;
+      }
+    } catch (e) {
+      print("EROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR 1" + e.toString());
+      result.serverError = e.toString();
+    }
+    return result;
+  }
+
+  Future<ApiResult<BookPageEntity>> getBoksWithPag(
       {int? page, required int items, String? url}) async {
     ApiResult<BookPageEntity> result = ApiResult();
     try {
@@ -29,8 +57,8 @@ class BookRepository {
         "items": items,
       };
 
-      Uri targetUrl = Uri.parse(
-          url ?? Utils.createGetUrl(baseUrl: Urls.getAllBooks, params: params));
+      Uri targetUrl = Uri.parse(url ??
+          Utils.createGetUrl(baseUrl: Urls.getBooksWithPag, params: params));
       var response = await http.get(targetUrl, headers: headers);
       result.statusCode = response.statusCode;
       if (response.statusCode == 200) {
