@@ -37,10 +37,11 @@ class _BookScreenState extends State<BookScreen> {
         padding: const EdgeInsets.all(10.0),
         child: BlocBuilder<BookCubit, BookState>(
           builder: (context, state) {
-
+            print(state);
             if (state is BookLoaded) {
               bookDataSource = BookDataSource(
-                  listBooksBaseModel: state.apiResult.responseObject.results);
+                  listBooksBaseModel: state.apiResult.responseObject.results,
+                  context: context);
               bookPageEntity = state.apiResult.responseObject;
             }
             switch (state.runtimeType) {
@@ -57,6 +58,21 @@ class _BookScreenState extends State<BookScreen> {
                   );
                   Navigator.pop(context);
                 });
+                return const Center(child: CircularProgressIndicator());
+              case BookDeleted:
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: GStyles.colorPrimary,
+                      content: const Text('Libro eliminado correctamente'),
+                    ),
+                  );
+
+                  ///Cerramos el dialog de eliminar ejemplar
+                  Navigator.pop(context);
+                  context.read<BookCubit>().loadBooks();
+                });
+
                 return const Center(child: CircularProgressIndicator());
               case BookLoaded:
                 return BookTable(

@@ -1,16 +1,27 @@
+import 'package:bibcujae/resources/general_styles.dart';
+import 'package:bibcujae/src/features/book/cubit/book_cubit.dart';
 import 'package:bibcujae/src/shared/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
-import '../cubit/ejemplar_cubit.dart';
+Widget deleteBookDialog({required BuildContext context, required String bookId}) {
+  void popContextCallback(String text) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: GStyles.colorPrimary,
+          content: Text(text),
+        ),
+      );
+      Navigator.pop(context);
+    });
+  }
 
-Widget deleteEjemplarDialog(
-    {required BuildContext context, required String id, bool? isBook}) {
   return SimpleDialog(
     contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
     children: [
-      Text("¿Seguro que desea eliminarlo?",
+      Text("¿Seguro que desea eliminar este libro?",
           style: context.textTheme.bodyText1
               ?.copyWith(fontWeight: FontWeight.bold, fontSize: 13.sp)),
       SizedBox(height: 20.sp),
@@ -28,7 +39,9 @@ Widget deleteEjemplarDialog(
           SizedBox(width: 2.w),
           ElevatedButton(
               onPressed: () {
-                // context.read<EjemplarCubit>().deleteEjemplar(id);
+                context
+                    .read<BookCubit>()
+                    .deleteBook(bookId, popContextCallback);
               },
               child: Text("Aceptar",
                   style: context.textTheme.bodyText1

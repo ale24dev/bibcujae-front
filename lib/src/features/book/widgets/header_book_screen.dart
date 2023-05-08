@@ -9,6 +9,7 @@ import '../../../entities/book_page_entity.dart';
 import '../../../repositories/book_repositories.dart';
 import '../../../shared/constants/constants.dart';
 import '../cubit/book_cubit.dart';
+import 'add_or_edit_book.dart';
 
 class HeaderBookScreen extends StatefulWidget {
   const HeaderBookScreen({
@@ -26,30 +27,7 @@ class HeaderBookScreen extends StatefulWidget {
 }
 
 class _HeaderBookScreenState extends State<HeaderBookScreen> {
-  late TextEditingController titleController;
-  late TextEditingController authorController;
-  late TextEditingController domCodeController;
-  late TextEditingController isbnController;
-  late TextEditingController deweyController;
-  late TextEditingController publicationController;
-  late TextEditingController colationController;
-  late TextEditingController referenceController;
-
-  bool emptyRequiredFields = false;
-
-  @override
-  void initState() {
-    titleController = TextEditingController();
-    authorController = TextEditingController();
-    domCodeController = TextEditingController();
-    isbnController = TextEditingController();
-    deweyController = TextEditingController();
-    publicationController = TextEditingController();
-    colationController = TextEditingController();
-    referenceController = TextEditingController();
-    super.initState();
-  }
-
+ 
   // @override
   // void dispose() {
   //   titleController.dispose();
@@ -126,12 +104,12 @@ class _HeaderBookScreenState extends State<HeaderBookScreen> {
                   )),
             ),
             SizedBox(width: 2.w),
-            if (widget.isFromSearch != null)
+            if (widget.isFromSearch == null)
               InkWell(
                 onTap: () {
                   showDialog(
                       context: context,
-                      builder: ((context) => addBookDialog(context)));
+                      builder: ((context) => const AddOrEditBook()));
                 },
                 child: Container(
                     decoration: BoxDecoration(
@@ -154,136 +132,6 @@ class _HeaderBookScreenState extends State<HeaderBookScreen> {
           ],
         ),
       ]),
-    );
-  }
-
-  Widget addBookDialog(BuildContext context) {
-    return SimpleDialog(
-      contentPadding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-      title: Center(
-          child: Text("Añadir libro",
-              style: context.textTheme.bodyText1
-                  ?.copyWith(fontWeight: FontWeight.bold, fontSize: 14.sp))),
-      children: [
-        addbookSection(
-            context: context,
-            title: "Título",
-            isRequired: true,
-            controller: titleController),
-        addbookSection(
-            context: context, title: "Autor", controller: authorController),
-        addbookSection(
-            context: context,
-            title: "Cod. Domicilio",
-            controller: domCodeController),
-        addbookSection(
-            context: context, title: "ISBN", controller: isbnController),
-        addbookSection(
-            context: context, title: "Dewey", controller: deweyController),
-        addbookSection(
-            context: context,
-            title: "Publicación",
-            controller: publicationController),
-        addbookSection(
-            context: context,
-            title: "Colación",
-            controller: colationController),
-        addbookSection(
-            context: context,
-            title: "Referencia",
-            controller: referenceController),
-        Container(
-          margin: EdgeInsets.only(top: 2.h),
-          child: Row(
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(primary: Colors.grey),
-                child: Text("Cancelar",
-                    style: context.textTheme.bodyText1
-                        ?.copyWith(color: Colors.white)),
-              ),
-              SizedBox(width: 5.w),
-              ElevatedButton(
-                  onPressed: () {
-                    if (titleController.text.isEmpty) {
-                      setState(() {
-                        emptyRequiredFields = true;
-                      });
-                    } else {
-                      BookBaseModel book = BookBaseModel(
-                          bookId: null,
-                          title: titleController.text,
-                          entry: null,
-                          authorType: null,
-                          author: authorController.text,
-                          otherAuthors: null,
-                          edition: null,
-                          series: null,
-                          notes: null,
-                          publicationYear: null,
-                          responsibilityMention: null,
-                          domCode: null,
-                          isbn: isbnController.text,
-                          dewey: deweyController.text,
-                          event: null,
-                          otherEvents: null,
-                          publication: publicationController.text,
-                          collation: colationController.text,
-                          otherTitles: null,
-                          pamphlet: null,
-                          reference: referenceController.text,
-                          entryLetters: null,
-                          titleLetters: null,
-                          classification: null,
-                          language: null,
-                          country: null);
-
-                      context.read<BookCubit>().createBook(bookBaseModel: book);
-                    }
-                  },
-                  child: Text("Crear",
-                      style: context.textTheme.bodyText1
-                          ?.copyWith(color: Colors.white))),
-            ],
-          ),
-        )
-      ],
-    );
-  }
-
-  Widget addbookSection(
-      {required BuildContext context,
-      required String title,
-      bool? isRequired,
-      required TextEditingController controller}) {
-    return Row(
-      children: [
-        Container(
-          width: 7.w,
-          child: Row(
-            children: [
-              Text(title, style: context.textTheme.bodyText1),
-              SizedBox(width: 4.sp),
-              isRequired != null
-                  ? Text(
-                      "*",
-                      style: context.textTheme.bodyText1
-                          ?.copyWith(color: Colors.red),
-                    )
-                  : const SizedBox.shrink()
-            ],
-          ),
-        ),
-        SizedBox(width: 10.sp),
-        Expanded(
-            child: TextField(
-          style: context.textTheme.bodyText1,
-          controller: controller,
-        ))
-      ],
     );
   }
 }

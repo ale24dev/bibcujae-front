@@ -29,7 +29,7 @@ class EjemplarDataSource extends DataGridSource {
                   columnName: 'Estado',
                   value: Utils.capitalize(e.estadoEjemplar.estado)),
               DataGridCell<String>(
-                  columnName: 'Eliminar', value: e.ejemplarId.toString()),
+                  columnName: 'Gestionar', value: e.ejemplarId.toString()),
             ]))
         .toList();
   }
@@ -52,7 +52,7 @@ class EjemplarDataSource extends DataGridSource {
   DataGridRowAdapter buildRow(DataGridRow row) {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((e) {
-      return e.columnName != "Eliminar"
+      return e.columnName != "Gestionar"
           ? Container(
               alignment: Alignment.center,
               padding: const EdgeInsets.all(8.0),
@@ -66,8 +66,8 @@ class EjemplarDataSource extends DataGridSource {
                     onPressed: () {
                       showDialog(
                           context: ctx,
-                          builder: ((context) =>
-                              deleteEjemplarDialog(context, e.value)));
+                          builder: ((context) => deleteEjemplarDialog(
+                              context: context, id: e.value)));
                     },
                     color: Colors.red),
                 SizedBox(width: 5.sp),

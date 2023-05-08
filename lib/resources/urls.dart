@@ -29,6 +29,8 @@ class Urls {
   static String get createBook => '$document/book/create';
   static String get donwloadBookReport => '$document/book/writeInExcel/';
   static String get searchBooksWithFilters => '$document/book/filter';
+  static String get updateBook => '$document/book/update';
+  static String get deleteBook => '$document/book/delete';
 
   ///Ejemplares services
   static String get getEjemplaresOfBook => '$document/ejemplar/libro';

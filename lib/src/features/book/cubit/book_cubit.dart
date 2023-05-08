@@ -56,7 +56,47 @@ class BookCubit extends Cubit<BookState> {
     }
   }
 
+  void deleteBook(String bookId, Function popContextCallback) async {
+    emit(BookLoading());
+
+    final ApiResult apiResult =
+        await serviceLocator<BookRepository>().deleteBook(bookId);
+
+    print("ANTEES: " + apiResult.statusCode.toString());
+    switch (apiResult.statusCode) {
+      case 200:
+        print("LLEGUE");
+        popContextCallback("Libro eliminado correctamente");
+
+        emit(BookDeleted());
+        break;
+
+      default:
+        emit(BookError(apiResult: apiResult));
+    }
+  }
+
   void selectBook(BookBaseModel? bookSelected) {
     _bookSelected = bookSelected;
+  }
+
+  void updateBook(
+      {required BookBaseModel bookBaseModel,
+      required String bookId,
+      required Function popContextCallback}) async {
+    emit(BookLoading());
+
+    final ApiResult apiResult = await serviceLocator<BookRepository>()
+        .updateBook(bookBaseModel, bookId);
+
+    switch (apiResult.statusCode) {
+      case 200:
+        popContextCallback("Libro actualizado correctamente");
+        emit(BookUpdated());
+        break;
+
+      default:
+        emit(BookError(apiResult: apiResult));
+    }
   }
 }

@@ -4,6 +4,7 @@ import 'package:bibcujae/src/features/book/widgets/book_table_data_source.dart';
 import 'package:bibcujae/src/features/search/widgets/section_filters.dart';
 import 'package:bibcujae/src/shared/extensions.dart';
 import 'package:bibcujae/src/shared/widgets/generic_button.dart';
+import 'package:bibcujae/src/shared/widgets/generic_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -80,13 +81,20 @@ class _SearchScreenState extends State<SearchScreen> {
           return const Center(child: CircularProgressIndicator());
         case SearchError:
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                backgroundColor: GStyles.colorFail,
-                content: Text(
-                    (state as SearchError).apiResult.serverError.toString()),
-              ),
-            );
+            showDialog(
+                context: context,
+                builder: ((context) => GenericDialog(
+                    text: (state as SearchError)
+                        .apiResult
+                        .serverError
+                        .toString())));
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(
+            //     backgroundColor: GStyles.colorFail,
+            //     content: Text(
+            //         (state as SearchError).apiResult.serverError.toString()),
+            //   ),
+            // );
           });
           break;
         default:
@@ -222,7 +230,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   if (state is SearchLoaded) {
                     bookDataSource = BookDataSource(
                         listBooksBaseModel:
-                            state.apiResult.responseObject.results);
+                            state.apiResult.responseObject.results,
+                        context: context);
                     bookPageEntity = state.apiResult.responseObject;
                     return BookTable(
                         isFromSearch: true,

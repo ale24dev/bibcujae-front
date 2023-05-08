@@ -4,6 +4,7 @@ import 'package:bibcujae/resources/general_styles.dart';
 import 'package:bibcujae/src/entities/book_page_entity.dart';
 import 'package:bibcujae/src/features/book/constants/pagination.dart';
 import 'package:bibcujae/src/features/book/cubit/book_cubit.dart';
+import 'package:bibcujae/src/features/book/widgets/add_or_edit_book.dart';
 import 'package:bibcujae/src/features/search/cubit/search_cubit.dart';
 import 'package:bibcujae/src/models/book_base_model.dart';
 import 'package:bibcujae/src/shared/constants/constants.dart';
@@ -18,7 +19,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'book_table_data_source.dart';
 import 'header_book_screen.dart';
 
-class BookTable extends StatelessWidget {
+class BookTable extends StatefulWidget {
   const BookTable(
       {super.key,
       required this.bookPageEntity,
@@ -35,28 +36,43 @@ class BookTable extends StatelessWidget {
   final bool? isFromSearch;
 
   @override
+  State<BookTable> createState() => _BookTableState();
+}
+
+class _BookTableState extends State<BookTable> {
+  @override
   Widget build(BuildContext context) {
+    dynamic editEjemplarDialogCallback(int bookId) async {
+      ///Obtener el ejemplar a partir del id enviado por parametro
+      BookBaseModel? bookBaseModel = await Utils.getBookById(context, bookId);
+
+      showDialog(
+          context: context, builder: ((context) => const AddOrEditBook()));
+    }
+
     return Container(
-      decoration: decoration,
+      decoration: widget.decoration,
       child: Column(
         children: [
           ///Cabecera de la tabla de libros
-          HeaderBookScreen(bookPageEntity: bookPageEntity),
+          HeaderBookScreen(
+              bookPageEntity: widget.bookPageEntity,
+              isFromSearch: widget.isFromSearch),
           Expanded(
             child: SfDataGrid(
-              source: bookDataSource,
+              source: widget.bookDataSource,
               columnWidthMode: ColumnWidthMode.fill,
               allowSorting: true,
               onCellTap: (details) async {
                 BookBaseModel? bookSelected = await Utils.getBookById(
                     context,
-                    bookPageEntity
+                    widget.bookPageEntity
                         .results[details.rowColumnIndex.rowIndex - 1].bookId!);
                 context.read<BookCubit>().selectBook(bookSelected);
 
                 if (details.rowColumnIndex.rowIndex != 0) {
                   context.go(Uri(path: '/book', queryParameters: {
-                    'idBook': bookPageEntity
+                    'idBook': widget.bookPageEntity
                         .results[details.rowColumnIndex.rowIndex - 1].bookId
                         .toString()
                   }).toString());
@@ -71,6 +87,7 @@ class BookTable extends StatelessWidget {
                 gridColumn(context: context, name: 'Publicación'),
                 gridColumn(context: context, name: 'Colación'),
                 gridColumn(context: context, name: 'Referencia'),
+                gridColumn(name: '', context: context),
               ],
             ),
           ),
@@ -80,16 +97,16 @@ class BookTable extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 InkWell(
-                  onTap: bookPageEntity.previous != null
+                  onTap: widget.bookPageEntity.previous != null
                       ? () {
-                          isFromSearch != null
+                          widget.isFromSearch != null
                               ? context
                                   .read<SearchCubit>()
                                   .searchBooksByFilters(
-                                    url: bookPageEntity.previous,
+                                    url: widget.bookPageEntity.previous,
                                   )
                               : context.read<BookCubit>().loadBooks(
-                                  url: bookPageEntity.previous,
+                                  url: widget.bookPageEntity.previous,
                                   paginationBook: PaginationBook.PREVIOUS);
                         }
                       : null,
@@ -97,7 +114,7 @@ class BookTable extends StatelessWidget {
                     padding: EdgeInsets.all(4.5.sp),
                     child: Container(
                         decoration: BoxDecoration(
-                            color: bookPageEntity.previous != null
+                            color: widget.bookPageEntity.previous != null
                                 ? GStyles.colorPrimary
                                 : Colors.grey,
                             borderRadius:
@@ -111,21 +128,21 @@ class BookTable extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Página ${bookPageEntity.currentPage} de ${bookPageEntity.numPages}",
+                  "Página ${widget.bookPageEntity.currentPage} de ${widget.bookPageEntity.numPages}",
                   style: context.textTheme.bodyText1
                       ?.copyWith(color: Colors.black),
                 ),
                 InkWell(
-                  onTap: bookPageEntity.next != null
+                  onTap: widget.bookPageEntity.next != null
                       ? () {
-                          isFromSearch != null
+                          widget.isFromSearch != null
                               ? context
                                   .read<SearchCubit>()
                                   .searchBooksByFilters(
-                                    url: bookPageEntity.next,
+                                    url: widget.bookPageEntity.next,
                                   )
                               : context.read<BookCubit>().loadBooks(
-                                  url: bookPageEntity.next,
+                                  url: widget.bookPageEntity.next,
                                   paginationBook: PaginationBook.NEXT);
                         }
                       : null,

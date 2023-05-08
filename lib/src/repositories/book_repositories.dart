@@ -187,4 +187,44 @@ class BookRepository {
     }
     return result;
   }
+
+  Future<ApiResult> deleteBook(String bookId) async {
+    ApiResult result = ApiResult();
+    try {
+      Map<String, String> headers = {
+        'Authorization':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNTY2MjE1LCJpYXQiOjE2ODA1NjU5MTUsImp0aSI6ImQ1Y2VkM2I3ODg4YjRiMWY4YjQ4NWI4MmFhNzc2M2ExIiwidXNlcl9pZCI6Mn0.5t1YtQgoSW4TTmttqhHtiYRJ_4W916CF1q76ZpRFjsU',
+      };
+
+      Uri targetUrl = Uri.parse("${Urls.deleteBook}/$bookId");
+      var response = await http.delete(targetUrl, headers: headers);
+      result.statusCode = response.statusCode;
+      print("STATUS CODE: " + result.statusCode.toString());
+    } catch (e) {
+      print("EROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR 1" + e.toString());
+      result.serverError = e.toString();
+    }
+    return result;
+  }
+
+  Future<ApiResult> updateBook(
+      BookBaseModel bookBaseModel, String bookId) async {
+    ApiResult result = ApiResult();
+    try {
+      Map<String, String> headers = {
+        'Authorization':
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjgwNTY2MjE1LCJpYXQiOjE2ODA1NjU5MTUsImp0aSI6ImQ1Y2VkM2I3ODg4YjRiMWY4YjQ4NWI4MmFhNzc2M2ExIiwidXNlcl9pZCI6Mn0.5t1YtQgoSW4TTmttqhHtiYRJ_4W916CF1q76ZpRFjsU',
+      };
+      print(bookBaseModel.toJson());
+      Uri targetUrl = Uri.parse("${Urls.updateBook}/$bookId");
+      var response = await http.patch(targetUrl,
+          headers: headers, body: json.encode(bookBaseModel.toJson()));
+      result.statusCode = response.statusCode;
+      print("STATUS CODE: " + result.statusCode.toString());
+    } catch (e) {
+      print("EROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR 1" + e.toString());
+      result.serverError = e.toString();
+    }
+    return result;
+  }
 }
