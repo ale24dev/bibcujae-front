@@ -4,6 +4,7 @@ import 'package:bibcujae/src/models/book_base_model.dart';
 import 'package:bibcujae/src/shared/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 
 class AddOrEditBook extends StatefulWidget {
@@ -35,6 +36,7 @@ class _AddOrEditBookState extends State<AddOrEditBook> {
   bool emptyRequiredFields = false;
 
   void popContextCallback(String text) {
+    print("entre");
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -42,7 +44,8 @@ class _AddOrEditBookState extends State<AddOrEditBook> {
           content: Text(text),
         ),
       );
-      Navigator.pop(context);
+      //Navigator.pop(context);
+      context.go("/home");
     });
   }
 
@@ -123,6 +126,7 @@ class _AddOrEditBookState extends State<AddOrEditBook> {
         Container(
           margin: EdgeInsets.only(top: 2.h),
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ElevatedButton(
                 onPressed: () {

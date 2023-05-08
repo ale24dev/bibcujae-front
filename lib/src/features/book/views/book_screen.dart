@@ -72,7 +72,7 @@ class _BookScreenState extends State<BookScreen> {
                   );
 
                   ///Cerramos el dialog de eliminar ejemplar
-                  Navigator.pop(context);
+                  //Navigator.pop(context);
                   context.read<BookCubit>().loadBooks();
                 });
 

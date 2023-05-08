@@ -23,13 +23,13 @@ final router = GoRouter(
     GoRoute(
       path: '/home',
       builder: (context, state) => const HomeScreen(),
-      // redirect: (context, state) {
-      //   if (!context.read<AuthCubit>().isSigned) {
-      //     return '/';
-      //   } else {
-      //     return null;
-      //   }
-      // },
+      redirect: (context, state) {
+        if (!context.read<AuthCubit>().isSigned) {
+          return '/';
+        } else {
+          return null;
+        }
+      },
     ),
     GoRoute(
         path: '/book',

@@ -52,10 +52,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   children: [
                     Center(child: Image.asset(AppAsset.cujaeLogo, height: 26.h)),
                     //Center(child: Image.asset(AppAsset.logo, height: 26.h)),
-                    SizedBox(height: 5.sp),
+                    SizedBox(height: 10.sp),
                     Container(
                       alignment: Alignment.center,
-                      child: Text("PAPYRUS",
+                      child: Text("Libroteca",
                           style: context.textTheme.bodyText1
                               ?.copyWith(fontSize: 13.sp)),
                     ),
@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         decoration: InputDecoration(
                             hintText: "Nombre de usuario",
                             hintStyle: context.textTheme.bodyText1
-                                ?.copyWith(color: Colors.grey.shade300),
+                                ?.copyWith(color: Colors.black87),
                             prefixIcon:
                                 const Icon(Icons.person, color: Colors.black),
                             focusedBorder: InputBorder.none,
@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         decoration: InputDecoration(
                             hintText: "Contraseña",
                             hintStyle: context.textTheme.bodyText1
-                                ?.copyWith(color: Colors.grey.shade300),
+                                ?.copyWith(color: Colors.black87),
                             prefixIcon:
                                 const Icon(Icons.password, color: Colors.black),
                             suffixIcon: IconButton(
