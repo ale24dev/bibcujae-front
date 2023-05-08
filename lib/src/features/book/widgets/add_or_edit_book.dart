@@ -136,73 +136,65 @@ class _AddOrEditBookState extends State<AddOrEditBook> {
               SizedBox(width: 5.w),
               ElevatedButton(
                   onPressed: () {
-                    if (titleController.text.isEmpty) {
-                      setState(() {
-                        emptyRequiredFields = true;
-                      });
+                    BookBaseModel book = BookBaseModel(
+                        bookId: null,
+                        title: titleController.text.isEmpty
+                            ? null
+                            : titleController.text,
+                        entry: entryController.text.isEmpty
+                            ? null
+                            : entryController.text,
+                        author: authorController.text.isEmpty
+                            ? null
+                            : authorController.text,
+                        edition: editionController.text.isEmpty
+                            ? null
+                            : editionController.text,
+                        publicationYear: annoPubController.text.isEmpty
+                            ? null
+                            : annoPubController.text,
+                        domCode: domCodeController.text.isEmpty
+                            ? null
+                            : domCodeController.text,
+                        isbn: isbnController.text.isEmpty
+                            ? null
+                            : isbnController.text,
+                        dewey: deweyController.text.isEmpty
+                            ? null
+                            : deweyController.text,
+                        event: eventController.text.isEmpty
+                            ? null
+                            : eventController.text,
+                        publication: publicationController.text.isEmpty
+                            ? null
+                            : publicationController.text,
+                        collation: colationController.text.isEmpty
+                            ? null
+                            : colationController.text,
+                        reference: referenceController.text.isEmpty
+                            ? null
+                            : referenceController.text,
+                        authorType: null,
+                        otherAuthors: null,
+                        series: null,
+                        notes: null,
+                        responsibilityMention: null,
+                        otherEvents: null,
+                        otherTitles: null,
+                        pamphlet: null,
+                        entryLetters: null,
+                        titleLetters: null,
+                        classification: null,
+                        language: null,
+                        country: null);
+                    if (widget.bookBaseModel == null) {
+                      context.read<BookCubit>().createBook(bookBaseModel: book);
                     } else {
-                      BookBaseModel book = BookBaseModel(
-                          bookId: null,
-                          title: titleController.text.isEmpty
-                              ? null
-                              : titleController.text,
-                          entry: entryController.text.isEmpty
-                              ? null
-                              : entryController.text,
-                          author: authorController.text.isEmpty
-                              ? null
-                              : authorController.text,
-                          edition: editionController.text.isEmpty
-                              ? null
-                              : editionController.text,
-                          publicationYear: annoPubController.text.isEmpty
-                              ? null
-                              : annoPubController.text,
-                          domCode: domCodeController.text.isEmpty
-                              ? null
-                              : domCodeController.text,
-                          isbn: isbnController.text.isEmpty
-                              ? null
-                              : isbnController.text,
-                          dewey: deweyController.text.isEmpty
-                              ? null
-                              : deweyController.text,
-                          event: eventController.text.isEmpty
-                              ? null
-                              : eventController.text,
-                          publication: publicationController.text.isEmpty
-                              ? null
-                              : publicationController.text,
-                          collation: colationController.text.isEmpty
-                              ? null
-                              : colationController.text,
-                          reference: referenceController.text.isEmpty
-                              ? null
-                              : referenceController.text,
-                          authorType: null,
-                          otherAuthors: null,
-                          series: null,
-                          notes: null,
-                          responsibilityMention: null,
-                          otherEvents: null,
-                          otherTitles: null,
-                          pamphlet: null,
-                          entryLetters: null,
-                          titleLetters: null,
-                          classification: null,
-                          language: null,
-                          country: null);
-                      if (widget.bookBaseModel == null) {
-                        context
-                            .read<BookCubit>()
-                            .createBook(bookBaseModel: book);
-                      } else {
-                        //TODO> ACTUALIZAR LIBRO
-                        context.read<BookCubit>().updateBook(
-                            bookBaseModel: book,
-                            bookId: widget.bookId!,
-                            popContextCallback: popContextCallback);
-                      }
+                      //TODO> ACTUALIZAR LIBRO
+                      context.read<BookCubit>().updateBook(
+                          bookBaseModel: book,
+                          bookId: widget.bookId!,
+                          popContextCallback: popContextCallback);
                     }
                   },
                   child: Text(

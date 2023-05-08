@@ -1,3 +1,4 @@
+import 'package:bibcujae/src/entities/book_page_entity.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -21,38 +22,55 @@ class BookCubit extends Cubit<BookState> {
 
   BookBaseModel? get bookSelected => _bookSelected;
 
-  void loadBooks({String? url, PaginationBook? paginationBook}) async {
-    print(url ?? "NADA");
-    listBooks = [];
+  BookPageEntity? _bookPageEntity;
+
+  BookPageEntity? get bookPageEntity => _bookPageEntity;
+
+  void loadBooks(
+      {String? url, PaginationBook? paginationBook, bool? fromError}) async {
     emit(BookLoading());
 
-    final ApiResult apiResult = await serviceLocator<BookRepository>()
-        .getBoksWithPag(url: url, items: ITEMS_BY_PAGE);
+    ///Reseteamos la tabla con los ultimos valores ya que ocurrió un error
+    if (fromError != null) {
+      Future.delayed(const Duration(milliseconds: 200))
+          .then((value) => emit(const BookLoaded()));
+    } else {
+      listBooks = [];
 
-    switch (apiResult.statusCode) {
-      case 200:
-        listBooks!.addAll(apiResult.responseObject.results);
-        emit(BookLoaded(apiResult: apiResult));
-        break;
+      final ApiResult apiResult = await serviceLocator<BookRepository>()
+          .getBoksWithPag(url: url, items: ITEMS_BY_PAGE);
 
-      default:
-        emit(BookError(apiResult: apiResult));
+      switch (apiResult.statusCode) {
+        case 200:
+          _bookPageEntity = apiResult.responseObject;
+          listBooks!.addAll(apiResult.responseObject.results);
+          emit(const BookLoaded());
+          break;
+
+        default:
+          emit(BookError(apiResult: apiResult));
+      }
     }
   }
 
   void createBook({required BookBaseModel bookBaseModel}) async {
     emit(BookLoading());
+    if (bookBaseModel.title == null) {
+      emit(BookError(
+          apiResult:
+              ApiResult(serverError: "Debe llenar los campos requeridos")));
+    } else {
+      final ApiResult apiResult =
+          await serviceLocator<BookRepository>().createBook(bookBaseModel);
 
-    final ApiResult apiResult =
-        await serviceLocator<BookRepository>().createBook(bookBaseModel);
+      switch (apiResult.statusCode) {
+        case 200:
+          emit(BookCreated());
+          break;
 
-    switch (apiResult.statusCode) {
-      case 200:
-        emit(BookCreated());
-        break;
-
-      default:
-        emit(BookError(apiResult: apiResult));
+        default:
+          emit(BookError(apiResult: apiResult));
+      }
     }
   }
 
@@ -62,7 +80,6 @@ class BookCubit extends Cubit<BookState> {
     final ApiResult apiResult =
         await serviceLocator<BookRepository>().deleteBook(bookId);
 
-    print("ANTEES: " + apiResult.statusCode.toString());
     switch (apiResult.statusCode) {
       case 200:
         print("LLEGUE");

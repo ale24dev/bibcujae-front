@@ -3,6 +3,7 @@ import 'package:bibcujae/src/features/book/cubit/book_cubit.dart';
 import 'package:bibcujae/src/features/book/widgets/book_table.dart';
 import 'package:bibcujae/src/shared/constants/constants.dart';
 import 'package:bibcujae/src/shared/extensions.dart';
+import 'package:bibcujae/src/shared/widgets/generic_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -37,12 +38,14 @@ class _BookScreenState extends State<BookScreen> {
         padding: const EdgeInsets.all(10.0),
         child: BlocBuilder<BookCubit, BookState>(
           builder: (context, state) {
-            print(state);
+            var cubit = context.read<BookCubit>();
             if (state is BookLoaded) {
               bookDataSource = BookDataSource(
-                  listBooksBaseModel: state.apiResult.responseObject.results,
+                  // listBooksBaseModel: state.apiResult.responseObject.results,
+                  listBooksBaseModel: cubit.listBooks!,
                   context: context);
-              bookPageEntity = state.apiResult.responseObject;
+              //bookPageEntity = state.apiResult.responseObject;
+              bookPageEntity = cubit.bookPageEntity!;
             }
             switch (state.runtimeType) {
               case BookLoading:
@@ -79,13 +82,22 @@ class _BookScreenState extends State<BookScreen> {
                     bookPageEntity: bookPageEntity,
                     bookDataSource: bookDataSource);
               case BookError:
-                return Center(
-                    child: Text((state as BookError).apiResult.serverError ??
-                        "Ha ocurrido un error inesperado"));
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      backgroundColor: GStyles.colorFail,
+                      content:
+                          Text((state as BookError).apiResult.serverError!),
+                    ),
+                  );
+                });
+                context.read<BookCubit>().loadBooks(fromError: true);
+
+                break;
               default:
-                Center(child: Text(state.props.first.toString()));
+                const Center(child: CircularProgressIndicator());
             }
-            return const SizedBox.shrink();
+            return const Center(child: CircularProgressIndicator());
           },
         ),
       ),

@@ -17,9 +17,8 @@ class BookUpdated extends BookState {}
 
 class BookDeleted extends BookState {}
 class BookLoaded extends BookState {
-  final ApiResult apiResult;
 
-  const BookLoaded({required this.apiResult});
+  const BookLoaded();
 }
 
 class BookError extends BookState {

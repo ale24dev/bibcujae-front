@@ -1,6 +1,5 @@
 import 'package:bibcujae/src/features/book/cubit/book_cubit.dart';
 import 'package:bibcujae/src/models/book_base_model.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,7 +8,6 @@ import '../features/auth/views/login_screen.dart';
 import '../features/book/views/book_details_screen.dart';
 import '../features/home/views/home_screen.dart';
 import '../shared/not_found_page.dart';
-import '../shared/utils.dart';
 
 // GoRouter configuration
 final router = GoRouter(
@@ -25,13 +23,13 @@ final router = GoRouter(
     GoRoute(
       path: '/home',
       builder: (context, state) => const HomeScreen(),
-      redirect: (context, state) {
-        if (!context.read<AuthCubit>().isSigned) {
-          return '/';
-        } else {
-          return null;
-        }
-      },
+      // redirect: (context, state) {
+      //   if (!context.read<AuthCubit>().isSigned) {
+      //     return '/';
+      //   } else {
+      //     return null;
+      //   }
+      // },
     ),
     GoRoute(
         path: '/book',
